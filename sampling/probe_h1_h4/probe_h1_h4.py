@@ -32,12 +32,12 @@ log = logging.getLogger("probe_h1_h4")
 gdal.UseExceptions()
 
 # ---------- paths ----------
-SAMPLES_DIR = Path("/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1")
-FWI_DIR     = Path("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+SAMPLES_DIR = Path("/s3/user/wildfire_dataset/h5_dataset/entire_can_v1")
+FWI_DIR     = Path("/s3/user/wildfire_dataset/self_built_materials/"
                    "bc_raw_data_new_fast/drivers/processed/fwi_components")
-WEIGHT_JSON = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/"
+WEIGHT_JSON = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/"
                    "sampling/fwi/outputs/weight_vector_w1w6.json")
-OUT_DIR     = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/"
+OUT_DIR     = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/"
                    "sampling/probe_h1_h4")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

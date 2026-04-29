@@ -95,8 +95,8 @@ def map_src_nodata_to_target(arr: np.ndarray, src_nd) -> np.ndarray:
 
 def main():
     ap = argparse.ArgumentParser(description='Stack TIFs along the band axis into a multi-band image and emit the band order (unified NoData = -9999)')
-    ap.add_argument('--input-dir', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_map_interpolated_margin_nodata_norm', help='Input directory')
-    ap.add_argument('--output', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_maps_materials/distance_map_inter_norm_stack.tif', help='Output multi-band TIF path')
+    ap.add_argument('--input-dir', default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_map_interpolated_margin_nodata_norm', help='Input directory')
+    ap.add_argument('--output', default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_maps_materials/distance_map_inter_norm_stack.tif', help='Output multi-band TIF path')
     ap.add_argument('--pattern', default='*.tif', help='File match pattern, default *.tif')
     ap.add_argument('--natural-sort', action='store_true', help='Use natural sort (numbers sorted by numeric value)')
     ap.add_argument('--save-map', action='store_true', help='Save the band mapping to a .bands.txt sidecar file')

@@ -20,7 +20,7 @@ import csv
 import glob
 import os
 
-DRIVERS_BASE = ("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+DRIVERS_BASE = ("/s3/user/wildfire_dataset/self_built_materials/"
                 "bc_raw_data_new_fast/drivers")
 ERA5_DIR     = os.path.join(DRIVERS_BASE, "ERA5")
 MODIS_DIR    = os.path.join(DRIVERS_BASE, "processed", "MCD14A1_combined")

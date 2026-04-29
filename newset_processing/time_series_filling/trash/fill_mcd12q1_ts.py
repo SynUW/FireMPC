@@ -47,8 +47,8 @@ DATE_RE = re.compile(r"^(\d{4})_(\d{2})_(\d{2})\.tif$", re.IGNORECASE)
 
 def parse_args():
     p = argparse.ArgumentParser(description="Convert MCD12Q1 annual images to daily (forward copy)")
-    p.add_argument("--input_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/MCD12Q1_mosaic_downsampled', type=Path, help="Input directory (contains yyyy_mm_dd.tif)")
-    p.add_argument("--output_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD12Q1_mosaic_downsampled', type=Path, help="Output directory (per-day TIFs)")
+    p.add_argument("--input_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/MCD12Q1_mosaic_downsampled', type=Path, help="Input directory (contains yyyy_mm_dd.tif)")
+    p.add_argument("--output_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD12Q1_mosaic_downsampled', type=Path, help="Output directory (per-day TIFs)")
     p.add_argument("--start", default='2000-01-01', type=str, help="Start date (inclusive), YYYY-MM-DD")
     p.add_argument("--end", default='2024-12-31', type=str, help="End date (inclusive), YYYY-MM-DD")
     p.add_argument("--mode", default="copy", choices=["hardlink", "copy", "symlink"],

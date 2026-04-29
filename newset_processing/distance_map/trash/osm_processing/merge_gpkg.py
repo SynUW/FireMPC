@@ -76,8 +76,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--inputs",
         nargs="+",
-        default=['/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-thematics.gpkg',
-                 '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/us-west-thematics.gpkg'],
+        default=['/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-thematics.gpkg',
+                 '/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/us-west-thematics.gpkg'],
         help="Input GPKG file path list (space-separated)",
     )
     parser.add_argument(
@@ -93,7 +93,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-us-mosaic-thematics.gpkg',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-us-mosaic-thematics.gpkg',
         help="Output GPKG path",
     )
     parser.add_argument(

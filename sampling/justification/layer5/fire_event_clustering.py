@@ -57,16 +57,16 @@ gdal.UseExceptions()
 # Paths
 # ---------------------------------------------------------------------------
 MODIS_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/"
     "spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged"
 )
 RESEARCH_AREA_SHP = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ecoregions/research_area_shpfile_merge.shp"
 )
 OUT_DIR = Path(
-    "/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/"
+    "/mnt/raid/user/hackathons/dataset_building_entire_canada/"
     "sampling/justification/layer5"
 )
 OUT_DIR.mkdir(parents=True, exist_ok=True)

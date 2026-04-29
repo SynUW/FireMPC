@@ -40,13 +40,13 @@ def parse_args() -> argparse.Namespace:
         "--inputs",
         nargs="+",
         default=[
-            "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-us-mosaic-thematics.gpkg",
+            "/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-us-mosaic-thematics.gpkg",
         ],
         help="List of input GPKG paths (same-named layers are auto-aggregated)",
     )
     ap.add_argument(
         "--output-dir",
-        default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/distance_map",
+        default="/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/distance_map",
         help="Output directory",
     )
     ap.add_argument(

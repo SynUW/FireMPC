@@ -52,7 +52,7 @@ DEFAULT_PIXEL_KM    = 5.0     # MODIS merged raster pixel size
 DEFAULT_SEED        = 42
 
 MODIS_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/"
     "spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged"
 )

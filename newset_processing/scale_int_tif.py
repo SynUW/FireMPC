@@ -1250,10 +1250,10 @@ def process_folder(
 def main():
     parser = argparse.ArgumentParser(description='Scale and min-max normalize specified bands of TIF files, and unify NoData=-32768 (no clipping to [0,1])')
     parser.add_argument('--input_folder',
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan',
                         type=Path, help='Input root directory; its immediate subdirectories contain tifs (one tif layer per subdir, no recursion)')
     parser.add_argument('--output_folder',
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt',
                         type=Path, help='Output root directory; preserves the same subdirectory structure as the input')
 
     # ===== band config overrides & defaults =====

@@ -37,17 +37,17 @@ def main() -> int:
     )
     parser.add_argument(
         "--json-dir",
-        default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling/sampling_calibrated",
+        default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling/sampling_calibrated",
         help="Input directory containing JSON files.",
     )
     parser.add_argument(
         "--mcd14a1-dir",
-        default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped/MCD14A1_combined_5xMaximumDown_merged_clipped_aligned",
+        default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped/MCD14A1_combined_5xMaximumDown_merged_clipped_aligned",
         help="Directory containing daily MCD14A1 GeoTIFFs named like YYYY_MM_DD.tif.",
     )
     parser.add_argument(
         "--out-dir",
-        default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling/sampling_calibrated_selected",
+        default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling/sampling_calibrated_selected",
         help="Output directory to write filtered JSON files into.",
     )
     parser.add_argument("--pos-class", type=int, default=9, help="Required mask value for positive samples.")

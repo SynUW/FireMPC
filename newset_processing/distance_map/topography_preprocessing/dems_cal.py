@@ -455,8 +455,8 @@ def main():
     ap = argparse.ArgumentParser(
         description='Compute DEM Slope, Aspect (sin/cos), Hillshade, optionally TPI/TWI; write a 5- or 7-band GeoTIFF (supports external mask, aligned by absolute pixel position with no interpolation)'
     )
-    ap.add_argument('--input-dir', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem', help='Input DEM directory')
-    ap.add_argument('--output-dir', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help='Output directory (will be created)')
+    ap.add_argument('--input-dir', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem', help='Input DEM directory')
+    ap.add_argument('--output-dir', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help='Output directory (will be created)')
     ap.add_argument('--pattern', default='*.tif', help='Input match pattern, default *.tif')
     ap.add_argument('--azimuth', type=float, default=315.0, help='Hillshade azimuth (degrees)')
     ap.add_argument('--altitude', type=float, default=35.0, help='Hillshade altitude (degrees); for BC mid-high latitudes a slightly lower value is recommended (e.g. 35 deg)')

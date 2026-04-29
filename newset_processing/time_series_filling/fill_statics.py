@@ -134,13 +134,13 @@ def main() -> None:
     ap.add_argument(
         "--input-dir",
         type=Path,
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/DEMs_downsampled_unified',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/DEMs_downsampled_unified',
         help="Directory containing the static-variable tif / tiff files (input directory)",
     )
     ap.add_argument(
         "--output-dir",
         type=Path,
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/DEMs_downsampled_unified_tsfilled',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/DEMs_downsampled_unified_tsfilled',
         help="Output directory (per-day YYYY_MM_DD.tif files are written here; may point to an /s3 path)",
     )
     ap.add_argument(

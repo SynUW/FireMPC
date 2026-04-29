@@ -83,12 +83,12 @@ from split_constructor import SplitConstructor
 # Configuration
 # ---------------------------------------------------------------------------
 OUTPUT_DIR = Path(
-    "//s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling"
+    "//s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling"
 )
 TEMP_DIR = OUTPUT_DIR / "_tmp_year_pools"
 # Final JSON outputs go alongside existing A-D,F variants
 FINAL_OUTPUT_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling/entire_can_samples"
+    "/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling/entire_can_samples"
 )
 
 FIRE_SEASON_MONTHS: frozenset[int] = frozenset(range(5, 11))  # May–Oct
@@ -207,7 +207,7 @@ def _build_research_mask(gt: tuple, W: int, H: int, shp_path: str) -> np.ndarray
     # Fix PROJ database location so gdal CRS operations work
     os.environ.setdefault(
         "PROJ_LIB",
-        "/home/zhengsen/.local/lib/python3.10/site-packages/pyproj/proj_dir/share/proj",
+        "/home/user/.local/lib/python3.10/site-packages/pyproj/proj_dir/share/proj",
     )
     from osgeo import gdal, ogr, osr
     log.info("Rasterizing research area shapefile (once) …")
@@ -220,7 +220,7 @@ def _build_research_mask(gt: tuple, W: int, H: int, shp_path: str) -> np.ndarray
 
     # Determine MODIS raster SRS from GeoTransform + a reference MODIS file
     MODIS_DIR = Path(
-        "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+        "/s3/user/wildfire_dataset/self_built_materials/"
         "bc_raw_data_new_fast/drivers/processed/"
         "spatial_filled_5xdownsampled_merged/"
         "MCD14A1_combined_5xMaximumDown_merged"
@@ -463,7 +463,7 @@ def _init_layers() -> None:
     # Load MODIS GeoTransform + dimensions
     from osgeo import gdal
     MODIS_DIR = Path(
-        "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+        "/s3/user/wildfire_dataset/self_built_materials/"
         "bc_raw_data_new_fast/drivers/processed/"
         "spatial_filled_5xdownsampled_merged/"
         "MCD14A1_combined_5xMaximumDown_merged"
@@ -775,7 +775,7 @@ def _load_years(years: list[int], key: str) -> pd.DataFrame:
 
 # Path to existing Variant F JSONL — used as fallback when F parquets are absent
 _F_JSONL_FALLBACK = Path(
-    "/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling/samples_variant_F.jsonl"
+    "/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling/samples_variant_F.jsonl"
 )
 
 

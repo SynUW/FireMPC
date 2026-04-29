@@ -665,9 +665,9 @@ def build_mcd_output_name(src_path: Path, suffix: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="Mask low-confidence pixels and quality-merge MOD/MYD09GA files (6-band output: 4 obs + 2 QA).")
-    parser.add_argument("--mod_dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD09GA_b1237_withQA', type=Path, help="MOD09GA input directory")
-    parser.add_argument("--myd_dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_b1237_withQA', type=Path, help="MYD09GA input directory")
-    parser.add_argument("--output_dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD09GA_b1237_withQA', type=Path, help="Output directory")
+    parser.add_argument("--mod_dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD09GA_b1237_withQA', type=Path, help="MOD09GA input directory")
+    parser.add_argument("--myd_dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_b1237_withQA', type=Path, help="MYD09GA input directory")
+    parser.add_argument("--output_dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD09GA_b1237_withQA', type=Path, help="Output directory")
     parser.add_argument("--suffix", default="", help="Output filename suffix")
     parser.add_argument(
         "--compress",

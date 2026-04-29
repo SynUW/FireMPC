@@ -17,7 +17,7 @@ MONTHS = [f"{m:02d}" for m in range(1, 13)]
 # BC bounding box: [North, West, South, East]
 AREA = [60, -140, 48, -114]
 
-OUT_DIR = Path("/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/derived_fire_fuel_biomass")
+OUT_DIR = Path("/mnt/raid/user/wildfire_dataset/self_built_materials/derived_fire_fuel_biomass")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 client = cdsapi.Client()

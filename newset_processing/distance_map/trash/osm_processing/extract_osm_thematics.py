@@ -72,12 +72,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--input_pbf",
-        default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-latest-clip.osm.pbf",
+        default="/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-latest-clip.osm.pbf",
         help="Input (already-clipped) .osm.pbf path",
     )
     parser.add_argument(
         "--output_gpkg",
-        default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-thematics.gpkg",
+        default="/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-thematics.gpkg",
         help="Output GeoPackage file path (contains multiple layers)",
     )
     parser.add_argument(

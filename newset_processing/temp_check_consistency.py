@@ -122,7 +122,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--root",
-        default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan",
+        default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan",
         help="Root directory (contains multiple subfolders)",
     )
     parser.add_argument(

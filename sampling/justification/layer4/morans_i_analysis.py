@@ -50,14 +50,14 @@ gdal.UseExceptions()
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-_REPO = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling")
+_REPO = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling")
 MODIS_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/"
     "spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged"
 )
 ECOZONE_SHP = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ecoregions/ecozones.shp"
 )
 OUT_DIR = _REPO / "justification" / "layer4"

@@ -475,21 +475,21 @@ Examples:
     parser.add_argument(
         '--input_folder',
         type=str,
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/worldpop',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/worldpop',
         help='Input folder path (containing TIFFs to be processed)'
     )
     
     parser.add_argument(
         '--template',
         type=str,
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_QA_state1km_2002_07_10_merge.tif',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_QA_state1km_2002_07_10_merge.tif',
         help='Template TIFF file path'
     )
     
     parser.add_argument(
         '--output_folder',
         type=str,
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/worldpop_clip',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/worldpop_clip',
         help='Output folder path'
     )
     

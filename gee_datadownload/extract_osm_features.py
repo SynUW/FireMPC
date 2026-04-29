@@ -22,7 +22,7 @@ from concurrent.futures import ProcessPoolExecutor, wait
 from tqdm import tqdm
 
 # ── Config ────────────────────────────────────────────────────────────────────
-BASE_DIR      = "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/osm"
+BASE_DIR      = "/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/osm"
 SNAPSHOTS_DIR = os.path.join(BASE_DIR, "yearly_snapshots")
 SHP_DIR       = os.path.join(BASE_DIR, "yearly_shapefiles")
 TMP_DIR       = os.path.join(BASE_DIR, "tmp")

@@ -123,8 +123,8 @@ def process_folder(input_dir: str, output_dir: str, bands_to_remove: int, skip_e
 
 def main():
     parser = argparse.ArgumentParser(description="Remove the last few bands of TIF images")
-    parser.add_argument("--input", default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined_merged", help="Input file or folder path")
-    parser.add_argument("--output", default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined_merged_remove2bands", help="Output file or folder path")
+    parser.add_argument("--input", default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined_merged", help="Input file or folder path")
+    parser.add_argument("--output", default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined_merged_remove2bands", help="Output file or folder path")
     parser.add_argument("--bands", "-b", type=int, default=2, help="Number of bands to remove (1 = last band, 2 = last two bands, etc.)")
     parser.add_argument("--no-skip-existing", action="store_true", 
                        help="Do not skip existing output files")

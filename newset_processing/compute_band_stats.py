@@ -297,7 +297,7 @@ def percentile_from_hist(lo: float, hi: float, hist: np.ndarray, q: float) -> fl
 def main():
     parser = argparse.ArgumentParser(description="Compute per-band min/max/0.1%/99.9% over all TIFs in a directory (ignoring invalid values); GDAL parallel version")
     parser.add_argument("--input_dir",  
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/ERA5_merged_clipped_unified',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/ERA5_merged_clipped_unified',
                         help="Input directory path")
     parser.add_argument("--bins", type=int, default=2048, help="Number of histogram bins; larger = finer but slower")
     parser.add_argument("--recursive", action="store_true", help="Search subdirectories recursively")

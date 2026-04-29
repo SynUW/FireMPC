@@ -22,7 +22,7 @@ Author: continuation-of-session memory (context budget filling up)
 ## 1. 关键背景（必读）
 
 ### 现有test set设计（biased）
-位置：`/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_{A,B,C,D,E}/samples_variant_*.json`
+位置：`/s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_{A,B,C,D,E}/samples_variant_*.json`
 
 每个variant都共享相同的test split：
 - 50,000 positive samples，全部 firemask = 9
@@ -55,7 +55,7 @@ FIREMASK_LOW_CONF    = 7          # exclusion buffer (not positive)
 | 8 | nominal-confidence fire |
 | 9 | high-confidence fire |
 
-数据源：`/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged/`
+数据源：`/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged/`
 文件命名：`yyyy_mm_dd.tif`，单波段GeoTIFF。
 
 ### 此前session已穷尽的实验（不要重复）
@@ -214,7 +214,7 @@ def extract_positives_at_firemask(year_range, firemask_value):
 
 ### Python环境（必须用）
 ```
-/home/zhengsen/.conda/envs/hackathon/bin/python3
+/home/user/.conda/envs/hackathon/bin/python3
 ```
 - numpy 1.26 / pandas 2.3 / sklearn 1.6 / GDAL ok
 - 系统python3 (numpy 1.21) 不兼容会立刻报错
@@ -242,7 +242,7 @@ cat /c/home/script.py | ssh myserver "cat > /server/path/script.py"
 
 ### Research area mask
 所有positive/negative pixels必须先mask到 `research_area_shpfile_merge.shp`：
-- 路径：`/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/ecoregions/research_area_shpfile_merge.shp`
+- 路径：`/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/ecoregions/research_area_shpfile_merge.shp`
 - Layer1Filter 已自动处理（_get_research_union cache）
 
 ### FWI weight & p99（已固定）
@@ -359,12 +359,12 @@ Phase B（约2周）：
 - `sampling/layer1_filter.py` — Layer1Filter类，**复用firemask读取逻辑**
 - `sampling/layer3_hard_negative_scorer.py` — FWI scoring class（备用）
 - `sampling/fwi/outputs/weight_vector_w1w6.json` — calibrated weights + p99
-- `/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_*/samples_variant_*.json` — 现有variants
-- MODIS tiles: `/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged/yyyy_mm_dd.tif`
-- FWI tiles: `/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/fwi_components/fwis_yyyy_mm_dd.tif`
+- `/s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_*/samples_variant_*.json` — 现有variants
+- MODIS tiles: `/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged/yyyy_mm_dd.tif`
+- FWI tiles: `/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/fwi_components/fwis_yyyy_mm_dd.tif`
 
 ### Paper
-- `/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/paper/v0.tex`
+- `/mnt/raid/user/hackathons/dataset_building_entire_canada/paper/v0.tex`
 
 ---
 

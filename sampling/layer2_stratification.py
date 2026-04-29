@@ -42,11 +42,11 @@ from osgeo import gdal
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 QUOTA_CSV = os.path.join(_THIS_DIR, "justification", "layer2", "stratum_quotas.csv")
 LC_DIR = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/MCD12Q1"
 )
 ECOZONE_SHP = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ecoregions/ecozones.shp"
 )
 
@@ -272,7 +272,7 @@ def _rasterize_ecozones(gt, W, H, eco_shp=ECOZONE_SHP):
     import os
     os.environ.setdefault(
         "PROJ_LIB",
-        "/home/zhengsen/.local/lib/python3.10/site-packages/pyproj/proj_dir/share/proj",
+        "/home/user/.local/lib/python3.10/site-packages/pyproj/proj_dir/share/proj",
     )
     from osgeo import gdal, ogr
     eco_gdf      = _load_eco(eco_shp)
@@ -646,7 +646,7 @@ if __name__ == "__main__":
     # Test get_stratum_for_pixel on a real MODIS file
     print()
     MODIS_FILE = (
-        "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+        "/s3/user/wildfire_dataset/self_built_materials/"
         "bc_raw_data_new_fast/drivers/processed/"
         "spatial_filled_5xdownsampled_merged/"
         "MCD14A1_combined_5xMaximumDown_merged/2018_07_15.tif"

@@ -68,11 +68,11 @@ COMPONENT_KEYS = ["ffmc", "dmc", "dc", "isi", "bui", "fwi"]
 BAND_DESCRIPTIONS = ["FFMC", "DMC", "DC", "ISI", "BUI", "FWI"]
 
 DEFAULT_ERA5_DIR = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ERA5"
 )
 DEFAULT_OUT_DIR = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/fwi_components"
 )
 

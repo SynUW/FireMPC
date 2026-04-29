@@ -52,9 +52,9 @@ def parse_args():
     p = argparse.ArgumentParser(
         description="Copy a .tif template per day into yyyy_mm_dd.tif files, dates inclusive of both ends."
     )
-    p.add_argument("--src-dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_maps_materials', help="Source directory containing the template .tif")
+    p.add_argument("--src-dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_maps_materials', help="Source directory containing the template .tif")
     p.add_argument("--template", default=None, help="Template filename (optional). If omitted, the source directory must contain exactly one .tif.")
-    p.add_argument("--dst-dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/distance_maps', help="Output directory (auto-created if missing)")
+    p.add_argument("--dst-dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/distance_maps', help="Output directory (auto-created if missing)")
     p.add_argument("--start", default='2000-01-01', help="Start date (inclusive), format YYYY-MM-DD")
     p.add_argument("--end", default='2024-12-31', help="End date (inclusive), format YYYY-MM-DD")
     p.add_argument("--overwrite", action="store_true", help="Overwrite if the target exists (default: skip)")

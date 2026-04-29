@@ -409,7 +409,7 @@ def main():
     parser = argparse.ArgumentParser(description="MCD14A1 time-series filling tool")
     parser.add_argument("--start_date", default='20000101', help="Start date (format: YYYYMMDD)")
     parser.add_argument("--end_date", default='20251231', help="End date (format: YYYYMMDD)")
-    parser.add_argument("--folder", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD14A1_combined_5xMaximumDown_merged_binary', help="Working folder path (filling happens in-place inside this folder)")
+    parser.add_argument("--folder", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD14A1_combined_5xMaximumDown_merged_binary', help="Working folder path (filling happens in-place inside this folder)")
     
     args = parser.parse_args()
     

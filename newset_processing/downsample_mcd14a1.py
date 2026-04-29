@@ -284,8 +284,8 @@ def parse_args():
     ap = argparse.ArgumentParser(
         description="MCD14A1 non-overlapping downsampling by fire-mask priority (pick the highest-priority class in each factor x factor window)"
     )
-    ap.add_argument("--input-dir", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined', help="Input GeoTIFF directory")
-    ap.add_argument("--output-dir", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled/MCD14A1_combined_5xMaximumDown', help="Output directory")
+    ap.add_argument("--input-dir", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined', help="Input GeoTIFF directory")
+    ap.add_argument("--output-dir", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled/MCD14A1_combined_5xMaximumDown', help="Output directory")
     ap.add_argument("--factor", type=int, default=5, help="Block side length (non-overlapping), default 5")
     ap.add_argument("--pattern", default="*.tif", help="glob, relative to input-dir")
     ap.add_argument("--recursive", action="store_true", help="rglob(pattern)")

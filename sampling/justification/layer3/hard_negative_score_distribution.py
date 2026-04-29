@@ -38,13 +38,13 @@ gdal.UseExceptions()
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-_REPO = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling")
+_REPO = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling")
 MODIS_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/MCD14A1_combined"
 )
 FWI_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/fwi_components"
 )
 WEIGHT_JSON = _REPO / "fwi" / "outputs" / "weight_vector_w1w6.json"

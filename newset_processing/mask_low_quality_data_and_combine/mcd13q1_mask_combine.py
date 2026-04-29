@@ -649,11 +649,11 @@ def main():
     ap = argparse.ArgumentParser(
         description="MOD13Q1 / MYD13Q1 masking + MCD13Q1 merge (DetailedQA / SummaryQA; merges by QC lexicographic order)"
     )
-    ap.add_argument("--mod_in", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD13Q1', help="MOD13Q1 input directory")
-    ap.add_argument("--myd_in", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD13Q1', help="MYD13Q1 input directory")
-    ap.add_argument("--mod_out", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD13Q1_QAapplied', help="MOD13Q1 masked-output directory")
-    ap.add_argument("--myd_out", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD13Q1_QAapplied', help="MYD13Q1 masked-output directory")
-    ap.add_argument("--mcd_out", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD13Q1_QAapplied', help="MCD13Q1 merge-output directory")
+    ap.add_argument("--mod_in", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD13Q1', help="MOD13Q1 input directory")
+    ap.add_argument("--myd_in", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD13Q1', help="MYD13Q1 input directory")
+    ap.add_argument("--mod_out", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD13Q1_QAapplied', help="MOD13Q1 masked-output directory")
+    ap.add_argument("--myd_out", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD13Q1_QAapplied', help="MYD13Q1 masked-output directory")
+    ap.add_argument("--mcd_out", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD13Q1_QAapplied', help="MCD13Q1 merge-output directory")
 
     ap.add_argument("--prefer", choices=["mod", "myd"], default="mod", help="Tie-break priority when scores are equal (default: mod)")
     ap.add_argument("--chunk", type=int, default=2048, help="Tile size during merging (pixels, default 2048)")

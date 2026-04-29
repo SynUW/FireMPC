@@ -204,10 +204,10 @@ Examples:
     )
     
     parser.add_argument('--input_folder', type=Path, 
-                        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_10x_norm/MCD15A3H_mosaic_downsampled_daily', 
+                        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_10x_norm/MCD15A3H_mosaic_downsampled_daily', 
                         help='Input folder path')
     parser.add_argument('--output_folder', type=Path, 
-                        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_10x_norm/MCD15A3H_mosaic_downsampled_daily_001', 
+                        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_10x_norm/MCD15A3H_mosaic_downsampled_daily_001', 
                         help='Output folder path')
     parser.add_argument('--threshold', type=float, default=0.1, help='Threshold (default 0.1; values below this become 0, not including the threshold itself)')
     parser.add_argument('--max_workers', type=int, default=16, help='Maximum number of threads for parallel processing (default: number of CPU cores)')

@@ -111,7 +111,7 @@ def main():
     parser = argparse.ArgumentParser(description='Check whether TIFF files can be read by GDAL; delete those that cannot')
     
     parser.add_argument('--input-dir', 
-                       default=r'/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD09GA_b1237_withQA',
+                       default=r'/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD09GA_b1237_withQA',
                        help='Input root directory containing multiple subfolders (TIFFs are searched recursively in all subfolders)')
     parser.add_argument(
         '--exclude-subdir',

@@ -13,16 +13,16 @@ Advanced downsampling script (high-performance version, with create_sample_confi
 Usage examples
 --------------
 # Non-overlapping (recommended, fastest)
-python run_downsample_fast.py --downsample-factor 10 --stride 10 --max-workers 8 --skip-existing --output-dir /mnt/raid/zhengsen/downsample_out
+python run_downsample_fast.py --downsample-factor 10 --stride 10 --max-workers 8 --skip-existing --output-dir /mnt/raid/user/downsample_out
 
 # Sliding window with overlap (e.g. stride=5)
-python run_downsample_fast.py --downsample-factor 10 --stride 5 --max-workers 8 --skip-existing --output-dir /mnt/raid/zhengsen/downsample_out
+python run_downsample_fast.py --downsample-factor 10 --stride 5 --max-workers 8 --skip-existing --output-dir /mnt/raid/user/downsample_out
 
 # For sum (FIRMS counts) while keeping output size consistent with other strides
-python run_downsample_fast.py --downsample-factor 10 --stride 5 --sum-nonoverlap-same-size --output-dir /mnt/raid/zhengsen/downsample_out
+python run_downsample_fast.py --downsample-factor 10 --stride 5 --sum-nonoverlap-same-size --output-dir /mnt/raid/user/downsample_out
 
 # Force rewrite (overwrites existing outputs; takes precedence over --skip-existing)
-python run_downsample_fast.py --downsample-factor 10 --stride 10 --max-workers 8 --rewrite --output-dir /mnt/raid/zhengsen/downsample_out
+python run_downsample_fast.py --downsample-factor 10 --stride 10 --max-workers 8 --rewrite --output-dir /mnt/raid/user/downsample_out
 """
 
 import os
@@ -86,7 +86,7 @@ def create_sample_config() -> List[Dict]:
         # {
         #     # MCD09GA b1/2/3/7 (apparent reflectance, continuous) -> average
         #     # QA bands (e.g. Surface_Reflectance_QA, State QA) must be masked before aggregation
-        #     'path': '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD09GA_b1237_QAapplied_spatialFilled',
+        #     'path': '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD09GA_b1237_QAapplied_spatialFilled',
         #     'downsample_method': 'average',
         #     'invalid_value': -32768,
         #     'qa_bands': []  # composited cloud-free data has no QA band
@@ -95,7 +95,7 @@ def create_sample_config() -> List[Dict]:
         {
             # MCD09GA b1/2/3/7 (apparent reflectance, continuous) -> average
             # QA bands (e.g. Surface_Reflectance_QA, State QA) must be masked before aggregation
-            'path': '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw_norm',
+            'path': '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw_norm',
             'downsample_method': 'average',
             'invalid_value': -32768,
             'qa_bands': []  # Composited cloud-free data has no QA band
@@ -103,7 +103,7 @@ def create_sample_config() -> List[Dict]:
         
         # {
         #     # MCD11A1 (LST, continuous) -> average; mask with QA first
-        #     'path': '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD11A1_QAapplied_spatialFilled',
+        #     'path': '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD11A1_QAapplied_spatialFilled',
         #     'downsample_method': 'average',
         #     'invalid_value': -32768,
         #     'qa_bands': []  # was [1], changed to 0-based
@@ -111,7 +111,7 @@ def create_sample_config() -> List[Dict]:
         
         # {
         #   # MCD09CMG
-        #   'path': '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD09CMG_QAapplied_spatialFilled',
+        #   'path': '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD09CMG_QAapplied_spatialFilled',
         #   'downsample_method': 'average',
         #   'invalid_value': -32765,  # set incorrectly in earlier processing, so the invalid value is -32765 here, not -32768
         #   'qa_bands': []
@@ -120,7 +120,7 @@ def create_sample_config() -> List[Dict]:
 
         # {
         #     # MCD11A2 (LST, continuous) -> average; mask with QA first
-        #     'path': '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/MCD11A2_mosaic_filled',
+        #     'path': '/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/MCD11A2_mosaic_filled',
         #     'downsample_method': 'average',
         #     'invalid_value': 0,
         #     'qa_bands': [4, 5, 6]  # likewise, 0-based (original config: [5, 6])
@@ -129,14 +129,14 @@ def create_sample_config() -> List[Dict]:
         # {
         #     # ERA5 (continuous variables: temperature, wind components, humidity, pressure, etc.) -> area average
         #     # * If accumulators (e.g. total_precipitation) are included, split them into a separate folder and use sum for that part (see the next optional block)
-        #     'path': '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/ERA5_consistent_mosaic_withnodata',
+        #     'path': '/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/ERA5_consistent_mosaic_withnodata',
         #     'downsample_method': 'average',
         #     'invalid_value': -32768,  # to keep zero values out of interpolation, mask with the first band and set invalid to -32768
         #     'qa_bands': []  # ERA5 has no QA band
         # },
         # {
         #     # MCD12Q1 (annual land cover, discrete classes) -> mode
-        #     'path': '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD12Q1_mosaic',
+        #     'path': '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD12Q1_mosaic',
         #     'downsample_method': 'mode',
         #     'invalid_value': 0,
         #     'qa_bands': []  # was [1], changed to 0-based
@@ -144,7 +144,7 @@ def create_sample_config() -> List[Dict]:
 
         # {
         #     # MCD15A3H (LAI/FPAR, continuous) -> average; mask with QA first
-        #     'path': '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD15A3H_QAapplied_spatialFilled',
+        #     'path': '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled/MCD15A3H_QAapplied_spatialFilled',
         #     'downsample_method': 'average',
         #     'invalid_value': -32768, # no invalid value, placeholder
         #     'qa_bands': []  # composited data has no QA band
@@ -153,7 +153,7 @@ def create_sample_config() -> List[Dict]:
         
         # {
         #     # MCD14A1 binary fire / detection raster: use sum (count); no QA band
-        #     'path': '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/MCD14A1_mosaic_binary',
+        #     'path': '/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/MCD14A1_mosaic_binary',
         #     'downsample_method': 'sum',
         #     'invalid_value': 255,  # NoData value for the binarized data
         #     'qa_bands': []
@@ -161,7 +161,7 @@ def create_sample_config() -> List[Dict]:
         
         # {
         #     # MCD14A1 non-binary fire / detection raster: use mode (count); no QA band
-        #     'path': '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD14A1_withoutMask_Binary',
+        #     'path': '/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD14A1_withoutMask_Binary',
         #     'downsample_method': 'mode',
         #     'invalid_value': 0,  # NoData value for the binarized data
         #     'qa_bands': []
@@ -849,7 +849,7 @@ def main():
                         help='Class upper bound for sliding-window mode (typically 255 for uint8)')
     parser.add_argument('--mode-class-batch', type=int, default=32,
                         help='Sliding-window mode "per-class batch" size')
-    parser.add_argument('--output-dir', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled',
+    parser.add_argument('--output-dir', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled',
                         help='Top-level output directory (a *_downsampled subdirectory is created per dataset)')
     args = parser.parse_args()
 

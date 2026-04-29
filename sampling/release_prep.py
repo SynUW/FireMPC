@@ -26,7 +26,7 @@ from pathlib import Path
 
 import pandas as pd
 
-_REPO = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling")
+_REPO = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling")
 OUT_DIR = _REPO / "justification" / "layer7"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

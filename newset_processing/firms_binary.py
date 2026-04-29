@@ -195,10 +195,10 @@ Example usage:
     )
     
     parser.add_argument('--input_folder', type=Path, 
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD14A1_combined_5xMaximumDown_merged',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD14A1_combined_5xMaximumDown_merged',
                        help='Input folder path')
     parser.add_argument('--output_folder', type=Path, 
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD14A1_combined_5xMaximumDown_merged_binary',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD14A1_combined_5xMaximumDown_merged_binary',
                        help='Output folder path')
     parser.add_argument('--threshold', type=int, default=9,
                        help='Binarization threshold (default: 8)')

@@ -65,6 +65,6 @@ def apply_log_transform(input_path, output_path, signed=False):
     print(f"Log transform saved to: {output_path}")
 
 if __name__ == "__main__":
-    input_tif = "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized.tif"
-    output_tif = "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized_log.tif"
+    input_tif = "/mnt/raid/user/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized.tif"
+    output_tif = "/mnt/raid/user/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized_log.tif"
     apply_log_transform(input_tif, output_tif, signed=True)  # signed=True supports negative values

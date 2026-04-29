@@ -124,8 +124,8 @@ def homogenize_single(src_path: str, dst_path: str, target_nd: float, block_size
 
 def main():
     ap = argparse.ArgumentParser(description='Single-file NoData unification: if any band has NoData at a pixel, set every band at that pixel to the target NoData')
-    ap.add_argument('--src', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack.tif', help='Input multi-band TIF')
-    ap.add_argument('--dst', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized.tif', help='Output TIF path')
+    ap.add_argument('--src', default='/mnt/raid/user/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack.tif', help='Input multi-band TIF')
+    ap.add_argument('--dst', default='/mnt/raid/user/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized.tif', help='Output TIF path')
     ap.add_argument('--target-nodata', type=float, default=-9999.0, help='Unified output NoData value, default -9999')
     ap.add_argument('--block-size', type=int, default=1024, help='Block-wise processing size (pixels)')
     args = ap.parse_args()

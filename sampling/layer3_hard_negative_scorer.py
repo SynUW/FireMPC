@@ -48,7 +48,7 @@ gdal.UseExceptions()
 _THIS_DIR = Path(__file__).resolve().parent
 WEIGHT_JSON = _THIS_DIR / "fwi" / "outputs" / "weight_vector_w1w6.json"
 FWI_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/fwi_components"
 )
 
@@ -293,7 +293,7 @@ import pandas as pd
 
 # MODIS merged raster path (for pixel row/col → lon/lat conversion)
 _MODIS_MERGED_DIR = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/"
     "spatial_filled_5xdownsampled_merged/"
     "MCD14A1_combined_5xMaximumDown_merged"

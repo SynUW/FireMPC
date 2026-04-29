@@ -921,10 +921,10 @@ def main():
     import argparse
     parser = argparse.ArgumentParser(description='Generate year-range datasets -- two-stage filtering + streaming writes (keeps the original H5 structure)')
     parser.add_argument('--data_dir', 
-                       default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm',
+                       default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm',
                        help='Data root directory')
     parser.add_argument('--output_dir',
-                       default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/h5_dataset/newset_dataset_v8',
+                       default='/mnt/raid/user/wildfire_dataset/self_built_materials/h5_dataset/newset_dataset_v8',
                        help='Output directory')
     parser.add_argument('--years', type=str, default='[2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]',
                        help='Target year list, format: [2000,2021,...] or 2000,2021,...')

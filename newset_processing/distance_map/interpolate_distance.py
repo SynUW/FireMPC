@@ -46,8 +46,8 @@ except Exception:
 
 def parse_args():
     ap = argparse.ArgumentParser(description="Interpolate the NoData regions of a distance raster (fill only invalid pixels)")
-    ap.add_argument("--input-folder", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/distance_map', help="Input folder containing .tif files to interpolate")
-    ap.add_argument("--output-folder", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/distance_map_interpolated_margin_nodata', help="Output folder")
+    ap.add_argument("--input-folder", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/distance_map', help="Input folder containing .tif files to interpolate")
+    ap.add_argument("--output-folder", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/distance_map_interpolated_margin_nodata', help="Output folder")
     ap.add_argument("--nodata", default='-32768',
                     help="Invalid value (e.g. -9999, -32768, or 'nan')")
     ap.add_argument("--search-radius", type=float, default=50.0,

@@ -231,9 +231,9 @@ def process_single_file(args_tuple):
 
 def main():
     parser = argparse.ArgumentParser(description='Use the template file\'s valid-value range to mask TIF files')
-    parser.add_argument('--template', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/ERA5_consistent_mosaic_withnodata_downsampled/2024_12_31.tif', help='Template TIF file path')
-    parser.add_argument('--input_dir', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD14A1_mosaic_binary_downsampled', help='Input TIF file directory')
-    parser.add_argument('--output_dir', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD14A1_mosaic_binary_downsampled_masked', help='Output directory for masked files')
+    parser.add_argument('--template', default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/ERA5_consistent_mosaic_withnodata_downsampled/2024_12_31.tif', help='Template TIF file path')
+    parser.add_argument('--input_dir', default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD14A1_mosaic_binary_downsampled', help='Input TIF file directory')
+    parser.add_argument('--output_dir', default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD14A1_mosaic_binary_downsampled_masked', help='Output directory for masked files')
     parser.add_argument('--pattern', default='*.tif', help='File match pattern (default: *.tif)')
     parser.add_argument('--recursive', action='store_true', help='Search subdirectories recursively')
     parser.add_argument('--threads', type=int, default=4, help='Number of threads (default: 4)')

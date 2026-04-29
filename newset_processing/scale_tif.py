@@ -562,10 +562,10 @@ def process_folder(
 def main():
     parser = argparse.ArgumentParser(description='Scale and min-max normalize specified bands of TIF files, and unify NoData=-32768 (no clipping to [0,1])')
     parser.add_argument('--input_folder',
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/ERA5_merged_clipped_unified',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/ERA5_merged_clipped_unified',
                         type=Path, help='Input folder path (single level, not recursive)')
     parser.add_argument('--output_folder',
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified_scaled/ERA5_merged_clipped_unified_scaled',
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified_scaled/ERA5_merged_clipped_unified_scaled',
                         type=Path, help='Output folder path')
     parser.add_argument('--band_config',
                         # band:scale:offset:min:max -- min/max as nan means no normalization

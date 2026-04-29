@@ -577,8 +577,8 @@ def process_terrain_stack(
 
 def main():
     ap = argparse.ArgumentParser("Normalize DEM/Slope/Aspect/Hillshade/TPI/TWI/Distance rasters")
-    ap.add_argument("--input-folder", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help="Input directory")
-    ap.add_argument("--output-folder", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help="Output directory")
+    ap.add_argument("--input-folder", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help="Input directory")
+    ap.add_argument("--output-folder", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help="Output directory")
     ap.add_argument(
         "--input-mode",
         choices=["files", "stack"],

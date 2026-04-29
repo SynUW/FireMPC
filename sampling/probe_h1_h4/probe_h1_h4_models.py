@@ -22,9 +22,9 @@ logging.basicConfig(level=logging.INFO,
                     datefmt="%H:%M:%S")
 log = logging.getLogger("probe_models")
 
-OUT_DIR = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/"
+OUT_DIR = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/"
                "sampling/probe_h1_h4")
-WEIGHT_JSON = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/"
+WEIGHT_JSON = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/"
                    "sampling/fwi/outputs/weight_vector_w1w6.json")
 BAND_NAMES = ["FFMC", "DMC", "DC", "ISI", "BUI", "FWI"]
 

@@ -13,7 +13,7 @@ from shapely.geometry import Point
 import os
 
 # Path to ecoregion shapefile directory on remote server
-ECOREGION_DIR = ("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+ECOREGION_DIR = ("/s3/user/wildfire_dataset/self_built_materials/"
                  "bc_raw_data_new_fast/drivers/ecoregions")
 
 # Module-level cache to avoid re-loading the shapefile on every call

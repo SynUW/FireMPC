@@ -126,9 +126,9 @@ def clip_raster_by_shapefile(
 
 def parse_args():
     ap = argparse.ArgumentParser(description="Clip a GeoTIFF with a shapefile and output a new file")
-    ap.add_argument("--input", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-distance/distance_water.tif', help="Input GeoTIFF path")
-    ap.add_argument("--shapefile", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_boundary/british_columnbia_no_crs_boundingBox.shp', help="Input shapefile path (.shp or other fiona-supported format)")
-    ap.add_argument("--output", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-distance/distance_water_cropped.tif', help="Output GeoTIFF path")
+    ap.add_argument("--input", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-distance/distance_water.tif', help="Input GeoTIFF path")
+    ap.add_argument("--shapefile", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_boundary/british_columnbia_no_crs_boundingBox.shp', help="Input shapefile path (.shp or other fiona-supported format)")
+    ap.add_argument("--output", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-distance/distance_water_cropped.tif', help="Output GeoTIFF path")
     ap.add_argument("--invert", action="store_true", help="Invert selection (keep the area outside the geometry)")
     ap.add_argument("--no-crop", dest="crop", action="store_false", help="Do not crop to the geometry's bounding box")
     ap.add_argument("--all-touched", action="store_true", help="Pixels touching the geometry boundary are included in the mask")

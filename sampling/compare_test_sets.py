@@ -73,7 +73,7 @@ def main() -> int:
     p.add_argument(
         "--dir",
         type=Path,
-        default=Path("/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling"),
+        default=Path("/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/sampling"),
         help="Directory containing samples_variant_*.json",
     )
     p.add_argument(

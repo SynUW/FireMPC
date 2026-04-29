@@ -32,5 +32,5 @@ There are five papers in total. In addition, identify at least five more papers 
 When designing the sampling strategy, balance implementation simplicity with the level of innovation required for publication. The timeline is approximately 30 days, with around 7 days allocated for data preprocessing (data has already been downloaded). The proposed sampling algorithms must be evaluated along these two dimensions.
 
 Finally, compile the overall paper structure, experimental design and evaluation, and required experiments and analyses into a Markdown document. Save all contents under the directory:
-/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling
+/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling
 Include references in the document.

@@ -222,12 +222,12 @@ def main() -> int:
         description="Use a shapefile to clip TIFs in a folder in parallel; output EPSG:4326"
     )
     parser.add_argument("--shp", 
-                        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/canada_boundary/lpr_000b21a_e_merge_simplified.shp', type=Path, help="Path to the shapefile used for clipping")
+                        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/canada_boundary/lpr_000b21a_e_merge_simplified.shp', type=Path, help="Path to the shapefile used for clipping")
     parser.add_argument(
-        "--input-dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/vis/drivers_vis/drivers', type=Path, help="Directory containing input TIFs"
+        "--input-dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/vis/drivers_vis/drivers', type=Path, help="Directory containing input TIFs"
     )
     parser.add_argument(
-        "--output-dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/vis/drivers_vis/drivers_clipped', type=Path, help="Output directory (will be created automatically)"
+        "--output-dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/vis/drivers_vis/drivers_clipped', type=Path, help="Output directory (will be created automatically)"
     )
     parser.add_argument(
         "--workers",

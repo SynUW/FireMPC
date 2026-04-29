@@ -35,7 +35,7 @@ from osgeo import gdal
 from audit.modis_utils import (get_positive_mask, FIREMASK_NONFIRE_LAND)
 from catalogue.ecozone_join import assign_ecozone_labels
 
-MODIS_DIR   = ("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+MODIS_DIR   = ("/s3/user/wildfire_dataset/self_built_materials/"
                "bc_raw_data_new_fast/drivers/processed/MCD14A1_combined")
 OUTPUT_DIR  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "outputs")
 EPSG_CANADA = "EPSG:3978"   # Canada Atlas Lambert -- standard projected CRS for Canada

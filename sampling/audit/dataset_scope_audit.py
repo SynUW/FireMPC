@@ -30,7 +30,7 @@ from audit.modis_utils import (read_modis_tile, get_positive_mask,
                                  FIREMASK_NOM_CONF, FIREMASK_LOW_CONF,
                                  FIREMASK_CLOUD, FIREMASK_NONFIRE_LAND)
 
-MODIS_DATA_DIR = ("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+MODIS_DATA_DIR = ("/s3/user/wildfire_dataset/self_built_materials/"
                   "bc_raw_data_new_fast/drivers/processed/MCD14A1_combined")
 
 # Pattern: MCD14A1_YYYY_MM_DD_tileNN.tif

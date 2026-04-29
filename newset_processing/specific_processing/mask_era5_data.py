@@ -297,10 +297,10 @@ class ERA5MaskProcessor:
 def main():
     parser = argparse.ArgumentParser(description="ERA5 data masking tool")
     parser.add_argument("input_path", type=Path, nargs='?',
-                        default = '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/ERA5_consistent_mosaic',
+                        default = '/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/ERA5_consistent_mosaic',
                         help="Input TIFF directory")
     parser.add_argument("output_path", type=Path, nargs='?',
-                        default = '/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/ERA5_consistent_mosaic_withnodata',
+                        default = '/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/ERA5_consistent_mosaic_withnodata',
                         help="Output directory")
     parser.add_argument("--workers", type=int, default=8, help="Number of worker threads (default 8)")
     parser.add_argument("--seed", type=int, default=None, help="Random seed (optional)")

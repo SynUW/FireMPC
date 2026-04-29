@@ -41,7 +41,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 DEFAULT_REFERENCE_VALID_MASK_DIR = (
-    '/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/'
+    '/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/'
     'drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan/ERA5_merged'
 )
 
@@ -890,10 +890,10 @@ def main():
         description='Generate year-range datasets: ERA5 reference spatial mask + tile streaming writes (no Pass-1)'
     )
     parser.add_argument('--data_dir', 
-                       default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt',
+                       default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt',
                        help='Data root directory')
     parser.add_argument('--output_dir',
-                       default='/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1',
+                       default='/s3/user/wildfire_dataset/h5_dataset/entire_can_v1',
                        help='Output directory')
     parser.add_argument('--years', type=str, default='[2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]',
                        help='Target year list, format: [2000,2021,...] or 2000,2021,...')

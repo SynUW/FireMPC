@@ -31,8 +31,8 @@ except ImportError:
 
 def parse_args():
     ap = argparse.ArgumentParser("Units-safe slope/aspect/hillshade from DEM")
-    ap.add_argument("--input-folder", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem', help="Input directory")
-    ap.add_argument("--output-folder", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help="Output directory")
+    ap.add_argument("--input-folder", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem', help="Input directory")
+    ap.add_argument("--output-folder", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade', help="Output directory")
     ap.add_argument("--pattern", default="Canada_Full_DEM_1km_MERIT.tif")
     ap.add_argument("--recursive", action="store_true")
     ap.add_argument("--band", type=int, default=1)

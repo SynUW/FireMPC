@@ -88,9 +88,9 @@ def parse_args():
     ap = argparse.ArgumentParser(
         description="Mosaic same-named *cropped.tif files from two folders by geographic position; B overrides A in overlaps"
     )
-    ap.add_argument("--dir-a", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/canada-distance', help="Folder A path")
-    ap.add_argument("--dir-b", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/us-west-distance', help="Folder B path")
-    ap.add_argument("--out-dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/distance_mosaic', help="Output folder")
+    ap.add_argument("--dir-a", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/canada-distance', help="Folder A path")
+    ap.add_argument("--dir-b", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/us-west-distance', help="Folder B path")
+    ap.add_argument("--out-dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/distance_mosaic', help="Output folder")
     ap.add_argument("--suffix", default="cropped.tif", help="Filename suffix (default: cropped.tif)")
     return ap.parse_args()
 

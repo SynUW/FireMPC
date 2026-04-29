@@ -694,11 +694,11 @@ def combine_dirs(mod_masked: Path, myd_masked: Path, out_dir: Path, out_nodata: 
 # -------------------- CLI --------------------
 def main():
     ap = argparse.ArgumentParser(description="MOD09A1 / MYD09A1 masking + MCD09A1 merge (keeps the original masking standard; merges by quality-score selection)")
-    ap.add_argument("--mod_in",  type=Path, default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD09A1", help="MOD09A1 input directory")
-    ap.add_argument("--myd_in",  type=Path, default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09A1", help="MYD09A1 input directory")
-    ap.add_argument("--mod_out", type=Path, default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD09A1_QAapplied", help="MOD09A1 masked-output directory")
-    ap.add_argument("--myd_out", type=Path, default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09A1_QAapplied", help="MYD09A1 masked-output directory")
-    ap.add_argument("--mcd_out", type=Path, default="/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MCD09A1_QAapplied", help="MCD09A1 merge-output directory")
+    ap.add_argument("--mod_in",  type=Path, default="/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD09A1", help="MOD09A1 input directory")
+    ap.add_argument("--myd_in",  type=Path, default="/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09A1", help="MYD09A1 input directory")
+    ap.add_argument("--mod_out", type=Path, default="/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD09A1_QAapplied", help="MOD09A1 masked-output directory")
+    ap.add_argument("--myd_out", type=Path, default="/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09A1_QAapplied", help="MYD09A1 masked-output directory")
+    ap.add_argument("--mcd_out", type=Path, default="/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MCD09A1_QAapplied", help="MCD09A1 merge-output directory")
 
     # Merge / performance
     ap.add_argument("--prefer", choices=["mod","myd"], default="mod", help="Tie-break priority when scores are equal (default: mod)")

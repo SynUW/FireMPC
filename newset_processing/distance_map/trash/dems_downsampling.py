@@ -25,8 +25,8 @@ from rasterio.warp import reproject
 
 def parse_args():
     ap = argparse.ArgumentParser("10× downsample for DEM & Distance rasters")
-    ap.add_argument("--input-folder", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/distance_map_interpolated_margin_nodata', help="Input directory")
-    ap.add_argument("--output-folder", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_map_interpolated_margin_nodata_new', help="Output directory")
+    ap.add_argument("--input-folder", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip/distance_map_interpolated_margin_nodata', help="Input directory")
+    ap.add_argument("--output-folder", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x/distance_map_interpolated_margin_nodata_new', help="Output directory")
     ap.add_argument("--recursive", action="store_true", help="Recursively traverse subdirectories")
     ap.add_argument("--pattern", default="*.tif", help="Match pattern (default *.tif)")
     ap.add_argument("--band", type=int, default=1, help="Band to process (default 1)")

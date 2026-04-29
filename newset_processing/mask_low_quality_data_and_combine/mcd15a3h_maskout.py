@@ -301,8 +301,8 @@ def process_single_file(
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--input_dir", type=str, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MCD15A3H', help="Input directory: contains MCD15A3H_yyyy_mm_dd_tilexx.tif")
-    ap.add_argument("--output_dir", type=str, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD15A3H_QAapplied', help="Output directory")
+    ap.add_argument("--input_dir", type=str, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MCD15A3H', help="Input directory: contains MCD15A3H_yyyy_mm_dd_tilexx.tif")
+    ap.add_argument("--output_dir", type=str, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD15A3H_QAapplied', help="Output directory")
     ap.add_argument("--nodata", type=float, default=-32768.0, help="NoData value written for LAI / FPAR (bad pixels are set to this value)")
     ap.add_argument("--overwrite", action="store_true", help="Allow overwriting existing output files")
 

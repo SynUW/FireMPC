@@ -358,19 +358,19 @@ def main():
     parser.add_argument(
         "--mask",
         type=str,
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/h5_dataset/global_valid_mask_v5.tif',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/h5_dataset/global_valid_mask_v5.tif',
         help="Global valid-position mask file path"
     )
     parser.add_argument(
         "--root-dir",
         type=str,
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/distance_maps',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/distance_maps',
         help="Root directory containing tif files, or a single tif file path"
     )
     parser.add_argument(
         "--output-log",
         type=str,
-        default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/mask_check_log.txt',
+        default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/mask_check_log.txt',
         help="Output log file path (default: <root_dir>/mask_check_log.txt)"
     )
     parser.add_argument(

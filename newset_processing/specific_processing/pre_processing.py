@@ -862,10 +862,10 @@ def _tif_matches_name_filter(name, flt):
 
 def main():
     ap = argparse.ArgumentParser(description="Three-in-one GDAL raster processing: align to the reference TIF grid (without changing origin / bounds) -> final shapefile clip (consolidating into a single grid-template)")
-    ap.add_argument("--input-root",  default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped/VPD_merged_clipped", type=Path)
-    ap.add_argument("--output-root", default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/VPD_merged_clipped_unified", type=Path)
-    ap.add_argument("--grid-template", default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped/MCD14A1_combined_5xMaximumDown_merged_clipped/2025_12_31.tif", type=Path)
-    ap.add_argument("--shapefile",    default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/Ecozones/research_area_shpfile_merge.shp", type=Path)
+    ap.add_argument("--input-root",  default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped/VPD_merged_clipped", type=Path)
+    ap.add_argument("--output-root", default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/VPD_merged_clipped_unified", type=Path)
+    ap.add_argument("--grid-template", default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped/MCD14A1_combined_5xMaximumDown_merged_clipped/2025_12_31.tif", type=Path)
+    ap.add_argument("--shapefile",    default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/Ecozones/research_area_shpfile_merge.shp", type=Path)
     ap.add_argument("--threads", type=int, default=16)
     ap.add_argument("--compress", type=str, default='LZW')
     ap.add_argument("--blocksize", type=int, default=512)

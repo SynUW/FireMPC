@@ -81,9 +81,9 @@ def clip_pbf_with_polygon(
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Clip an OSM .osm.pbf with a shapefile and output the clipped .osm.pbf (using GDAL and osmium)")
-    parser.add_argument("--input_pbf", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/us-west-latest.osm.pbf', help="Input .osm.pbf path")
-    parser.add_argument("--clipsrc", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_boundary/british_columnbia_no_crs_boundingBox.shp', help="Shapefile path used for clipping (boundary data)")
-    parser.add_argument("--output_pbf", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/osm_map/us-west-latest-clip.osm.pbf', help="Output clipped .osm.pbf path")
+    parser.add_argument("--input_pbf", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/us-west-latest.osm.pbf', help="Input .osm.pbf path")
+    parser.add_argument("--clipsrc", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_boundary/british_columnbia_no_crs_boundingBox.shp', help="Shapefile path used for clipping (boundary data)")
+    parser.add_argument("--output_pbf", default='/mnt/raid/user/wildfire_dataset/self_built_materials/osm_map/us-west-latest-clip.osm.pbf', help="Output clipped .osm.pbf path")
     parser.add_argument("--assume_wgs84", action="store_true", help="If the shapefile lacks .prj but its coordinates are valid WGS84 lon/lat, assign EPSG:4326 to it")
     return parser.parse_args()
 

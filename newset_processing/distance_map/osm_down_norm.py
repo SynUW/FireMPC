@@ -70,13 +70,13 @@ def parse_args():
     ap.add_argument(
         "--osm-dir",
         type=Path,
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/osm/yearly_1km_tifs',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/osm/yearly_1km_tifs',
         help="OSM input root, with roads/powerlines/buildings/rivers/lakes subdirectories",
     )
     ap.add_argument(
         "--output-dir",
         type=Path,
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/OSMs_downsampled',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/OSMs_downsampled',
         help="Output root directory (will be created); same layout as input, with rivers+lakes -> waters",
     )
     ap.add_argument(

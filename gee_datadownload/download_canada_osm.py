@@ -25,7 +25,7 @@ import requests
 from tqdm import tqdm
 
 # ── Config ────────────────────────────────────────────────────────────────────
-OUTPUT_DIR      = "/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/osm"
+OUTPUT_DIR      = "/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/osm"
 HISTORY_DIR     = os.path.join(OUTPUT_DIR, "history")
 SNAPSHOTS_DIR   = os.path.join(OUTPUT_DIR, "yearly_snapshots")
 FEATURES_DIR    = os.path.join(OUTPUT_DIR, "yearly_features")  # kept for backwards compatibility

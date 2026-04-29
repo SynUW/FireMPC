@@ -29,8 +29,8 @@ def parse_args():
     ap = argparse.ArgumentParser(
         description="WorldPop: QuantileTransformer -> normal, then min-max to [0.01, 1] (pop > 0 only)"
     )
-    ap.add_argument("--input-dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw', type=Path, help="Directory containing multiple TIFs")
-    ap.add_argument("--output-dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw_norm', type=Path, help="Output directory (will be created)")
+    ap.add_argument("--input-dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw', type=Path, help="Directory containing multiple TIFs")
+    ap.add_argument("--output-dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw_norm', type=Path, help="Output directory (will be created)")
     ap.add_argument("--pattern", default="*.tif", help="Glob relative to input-dir, default *.tif")
     ap.add_argument("--recursive", action="store_true", help="Recursive rglob(pattern)")
     ap.add_argument("--band", type=int, default=1, help="Band index to read (1-based)")

@@ -49,8 +49,8 @@ def copy_one(template: str, out_path: str, overwrite: bool) -> bool:
 
 def main():
     ap = argparse.ArgumentParser(description='Copy a template TIF over a date range as ASTER_yyyy_mm_dd.tif')
-    ap.add_argument('--src-file', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized_downsampled10x_log.tif', help='Template TIF file path (will be copied to per-date files)')
-    ap.add_argument('--output-dir', default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map_interpolated_10x', help='Output directory (will be created)')
+    ap.add_argument('--src-file', default='/mnt/raid/user/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map/Topo_and_distance_map_stack_nodata_homogenized_downsampled10x_log.tif', help='Template TIF file path (will be copied to per-date files)')
+    ap.add_argument('--output-dir', default='/mnt/raid/user/wildfire_dataset/self_built_materials/all_data_masked/DEM_and_distance_map_interpolated_10x', help='Output directory (will be created)')
     ap.add_argument('--start-date', default='2000-01-01', help='Start date YYYY-MM-DD (inclusive)')
     ap.add_argument('--end-date', default='2024-12-31', help='End date YYYY-MM-DD (inclusive)')
     ap.add_argument('--prefix', default='TopoDistance', help='Output filename prefix, default ASTER')

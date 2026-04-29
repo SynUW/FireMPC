@@ -18,7 +18,7 @@ if hasattr(sys, 'stderr'):
     warnings.filterwarnings('ignore')
     sys.stderr = _stderr
 
-ROOT = Path("/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/trash")
+ROOT = Path("/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/trash")
 FIX_WKT_STR = None
 
 def _fmt_time(s: float) -> str:

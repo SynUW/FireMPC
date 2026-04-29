@@ -113,9 +113,9 @@ def main():
     parser = argparse.ArgumentParser(
         description='MCD15A3H data processing: 249 -> 0, 0 -> -32768 (NoData)'
     )
-    parser.add_argument('--input', type=str, default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD15A3H_mosaic',
+    parser.add_argument('--input', type=str, default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD15A3H_mosaic',
                         help='Input folder path')
-    parser.add_argument('--output', type=str, default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD15A3H_mosaic_249',
+    parser.add_argument('--output', type=str, default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD15A3H_mosaic_249',
                         help='Output folder path')
     parser.add_argument('--pattern', type=str, default='*.tif',
                         help='File match pattern (default: *.tif)')

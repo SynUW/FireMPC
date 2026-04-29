@@ -348,12 +348,12 @@ def process_all(mod_dir, myd_dir, out_dir, workers=4, block_size=512,
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="MOD14A1 + MYD14A1 composite (fire detection; Excel NoData + validity priority)")
-    parser.add_argument("--mod_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MOD14A1_mosaic', help="MOD14A1 folder path")
-    parser.add_argument("--myd_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MYD14A1_mosaic', help="MYD14A1 folder path")
-    parser.add_argument("--out_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD14A1_mosaic', help="Output folder path")
+    parser.add_argument("--mod_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MOD14A1_mosaic', help="MOD14A1 folder path")
+    parser.add_argument("--myd_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MYD14A1_mosaic', help="MYD14A1 folder path")
+    parser.add_argument("--out_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD14A1_mosaic', help="Output folder path")
     parser.add_argument("--workers", type=int, default=4, help="Number of parallel processes")
     parser.add_argument("--block_size", type=int, default=512, help="Block size")
-    parser.add_argument("--nodata-xlsx", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/no_data_statistics.xlsx', help="Path to an Excel file with columns 'folder name' and 'no data'")
+    parser.add_argument("--nodata-xlsx", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/no_data_statistics.xlsx', help="Path to an Excel file with columns 'folder name' and 'no data'")
     parser.add_argument("--output-nodata", type=int, default=None,
                         help="Optional: force the output NoData; defaults to Excel's MOD/MYD value, or -32768 if missing")
     args = parser.parse_args()

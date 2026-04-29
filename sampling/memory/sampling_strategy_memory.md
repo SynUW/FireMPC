@@ -176,7 +176,7 @@ C_baseline反而最低，因为hard-neg在FWI-only probe下相当于"故意挑�
 - `/tmp/learning_curve.py` — Z/Y/G learning curve（legacy）
 
 ### Python环境
-**关键**：必须使用 `/home/zhengsen/.conda/envs/hackathon/bin/python3` (np 1.26 / pd 2.3 / sk 1.6 / GDAL ok)。
+**关键**：必须使用 `/home/user/.conda/envs/hackathon/bin/python3` (np 1.26 / pd 2.3 / sk 1.6 / GDAL ok)。
 系统python3 (numpy 1.21) 和 pandas 不兼容，会立刻报ImportError。
 
 ---

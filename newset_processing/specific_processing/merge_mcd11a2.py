@@ -230,9 +230,9 @@ def _worker(args):
 
 def main():
     ap = argparse.ArgumentParser(description="Fill B (MOD)'s invalid pixels with A (MYD) (per band, robust-fallback version)")
-    ap.add_argument("--b_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MOD11A2_mosaic', help="B base directory (MOD)")
-    ap.add_argument("--a_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MYD11A2_mosaic', help="A fill-source directory (MYD)")
-    ap.add_argument("--out_dir", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD11A2_mosaic', help="Output directory")
+    ap.add_argument("--b_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MOD11A2_mosaic', help="B base directory (MOD)")
+    ap.add_argument("--a_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MYD11A2_mosaic', help="A fill-source directory (MYD)")
+    ap.add_argument("--out_dir", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic/MCD11A2_mosaic', help="Output directory")
     ap.add_argument("--suffix", default="", help="Output filename suffix (e.g. _fused)")
     ap.add_argument("--workers", type=int, default=4, help="Number of parallel processes")
     ap.add_argument("--resample_auto", action="store_true", help="Auto-select resampling (integer = nearest; float = bilinear)")

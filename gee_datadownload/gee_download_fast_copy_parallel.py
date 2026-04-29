@@ -28,11 +28,11 @@ warnings.filterwarnings("ignore", message="There is no STAC entry for")
 warnings.filterwarnings("ignore", message="Geometry is in a geographic CRS. Results from 'area' are likely incorrect.")
 
 # ================== User configuration ==================
-# save_dir = r'/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches'
-save_dir = r'/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers'
+# save_dir = r'/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches'
+save_dir = r'/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers'
 os.makedirs(save_dir, exist_ok=True)
-# shapefile_path = r'/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/shpfiles/bc_boundary/bc_boundary_without_sea.shp'
-shapefile_path = r'/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/shpfiles/Canada_boundary/Canada_Export_grids_1_2.shp'
+# shapefile_path = r'/mnt/raid/user/wildfire_dataset/self_built_materials/shpfiles/bc_boundary/bc_boundary_without_sea.shp'
+shapefile_path = r'/mnt/raid/user/wildfire_dataset/self_built_materials/shpfiles/Canada_boundary/Canada_Export_grids_1_2.shp'
 SERVICE_ACCOUNT_KEYS = [
     "./api_key/b250_down3.json",
     './api_key/b250_down4.json',
@@ -101,7 +101,7 @@ class TempFileManager:
             '/tmp',  # System temporary directory
             '/var/tmp',  # System temporary directory
             '/mnt/raid/tmp',  # If RAID storage is available
-            '/home/zhengsen/tmp',  # tmp under the user's home directory
+            '/home/user/tmp',  # tmp under the user's home directory
             tempfile.gettempdir()  # Default temp directory
         ]
         

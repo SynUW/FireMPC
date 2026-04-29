@@ -225,8 +225,8 @@ def build_output_name(src_basename: str) -> str:
 
 def main():
     ap = argparse.ArgumentParser(description='Compute NDVI and EVI from MODIS multi-spectral reflectance and output a two-band GeoTIFF')
-    ap.add_argument('--input-dir', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD09GA_b1237_QAapplied_spatialFilled_downsampled_merged', help='Input directory (containing yyyy_mm_dd.tif files)')
-    ap.add_argument('--output-dir', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/NDVIEVI_QAapplied_spatialFilled_downsampled_merged_float', help='Output directory (will be created)')
+    ap.add_argument('--input-dir', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/MCD09GA_b1237_QAapplied_spatialFilled_downsampled_merged', help='Input directory (containing yyyy_mm_dd.tif files)')
+    ap.add_argument('--output-dir', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan_scaledInt/NDVIEVI_QAapplied_spatialFilled_downsampled_merged_float', help='Output directory (will be created)')
     ap.add_argument('--pattern', default='*.tif', help='Input match pattern, default: yyyy_mm_dd.tif format')
     ap.add_argument('--scale-factor', type=float, default=0.0001, help='Reflectance scale factor (raw * scale_factor + offset)')
     ap.add_argument('--offset', type=float, default=0, help='Reflectance offset')

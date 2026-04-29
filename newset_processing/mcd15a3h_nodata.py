@@ -115,12 +115,12 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Replace invalid values with 0 and output GeoTIFFs with no nodata set")
     p.add_argument(
         "--input-dir",
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/MCD15A3H_QAapplied_spatialFilled_downsampled_merged_clipped_unified',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/MCD15A3H_QAapplied_spatialFilled_downsampled_merged_clipped_unified',
         help="Input directory (contains tif / TIF)",
     )
     p.add_argument(
         "--output-dir",
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/MCD15A3H_QAapplied_spatialFilled_downsampled_merged_clipped_unified_rightnodata',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified/MCD15A3H_QAapplied_spatialFilled_downsampled_merged_clipped_unified_rightnodata',
         help="Output directory (preserves relative paths and filenames)",
     )
     p.add_argument("--recursive", action="store_true", help="Process subdirectories recursively")

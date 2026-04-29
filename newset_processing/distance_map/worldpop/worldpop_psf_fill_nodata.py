@@ -50,13 +50,13 @@ def parse_args():
     ap.add_argument(
         "--input-dir",
         type=Path,
-        default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/clipped",
+        default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/clipped",
         help="Population GeoTIFF directory",
     )
     ap.add_argument(
         "--output-dir",
         type=Path,
-        default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/psf_fill",
+        default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/psf_fill",
         help="Output directory (will be created)",
     )
     ap.add_argument("--pattern", default="*.tif", help="glob, relative to input-dir")

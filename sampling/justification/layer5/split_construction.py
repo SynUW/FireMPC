@@ -45,11 +45,11 @@ from shapely.geometry import Point
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-_REPO   = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling")
+_REPO   = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling")
 OUT_DIR = _REPO / "justification" / "layer5"
 
 ECOZONES_SHP = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ecoregions/ecozones.shp"
 )
 POS_DIST_CSV = _REPO / "justification" / "layer2" / "raw_positive_distribution_by_ecoregion.csv"

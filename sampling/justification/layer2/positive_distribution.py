@@ -44,20 +44,20 @@ from osgeo import gdal
 # Paths                                                                         #
 # --------------------------------------------------------------------------- #
 MODIS_DIR = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/"
     "spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged"
 )
 LC_DIR = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/processed/MCD12Q1"
 )
 ECOZONE_SHP = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ecoregions/ecozones.shp"
 )
 RESEARCH_AREA_SHP = (
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/"
+    "/s3/user/wildfire_dataset/self_built_materials/"
     "bc_raw_data_new_fast/drivers/ecoregions/research_area_shpfile_merge.shp"
 )
 

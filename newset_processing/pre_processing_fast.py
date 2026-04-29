@@ -1017,7 +1017,7 @@ def process_all(input_roots, output_root, grid_template_path, shapefile_path,
 
 
 _FOLDER_MODE_OUTPUT_ROOT = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/"
+    "/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/"
     "drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan")
 
 
@@ -1026,7 +1026,7 @@ def main():
         description="High-performance GDAL raster processing (three-stage pipeline: NFS prefetch -> in-memory processing -> async writeback)")
     ap.add_argument(
         "--root-folder",
-        # default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged',
+        # default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged',
         default=None,
         type=Path,
         metavar="DIR",
@@ -1037,22 +1037,22 @@ def main():
     )
     ap.add_argument(
         "--input-root",
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw_norm',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/worldpop_v2_clipped/access_idw_norm',
         type=Path,
         help="Used together with --output-root: a single input root directory (recursively process all GeoTIFFs beneath it)."
              "Required when --root-folder is not used.",
     )
     ap.add_argument(
         "--output-root",
-        default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan/access_idw_norm',
+        default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_unifiedEntireCan/access_idw_norm',
         type=Path,
         help="Used together with --input-root: the output root directory. Required when --root-folder is not used.",
     )
     ap.add_argument("--grid-template",
-                    default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged/2025_12_31.tif",
+                    default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged/MCD14A1_combined_5xMaximumDown_merged/2025_12_31.tif",
                     type=Path)
     ap.add_argument("--shapefile",
-                    # default="/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/Ecozones/research_area_shpfile_merge.shp",
+                    # default="/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/Ecozones/research_area_shpfile_merge.shp",
                     default=None,
                     type=Path,
                     help="Optional: shp used for clipping / masking. If not provided, only --grid-template is used as the single source of truth for grid alignment (no vector clipping).")

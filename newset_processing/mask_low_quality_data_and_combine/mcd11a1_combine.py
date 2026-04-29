@@ -420,11 +420,11 @@ def build_pairs(mod_dir: Path, myd_dir: Path):
 def main():
     ap = argparse.ArgumentParser(description="MOD11A1 / MYD11A1 per-pixel merge (parallel + tiled + geographically aligned, keeping QC)")
     ap.add_argument("--mod", type=Path, 
-                    default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD11A1_QAapplied', help="MOD11A1 directory (filenames include the date)")
+                    default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD11A1_QAapplied', help="MOD11A1 directory (filenames include the date)")
     ap.add_argument("--myd", type=Path, 
-                    default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD11A1_QAapplied', help="MYD11A1 directory (filenames include the date)")
+                    default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD11A1_QAapplied', help="MYD11A1 directory (filenames include the date)")
     ap.add_argument("--out", type=Path, 
-                    default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MCD11A1_QAapplied', help="Output directory")
+                    default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MCD11A1_QAapplied', help="Output directory")
     ap.add_argument("--prefer", choices=["mod", "myd"], default="mod", help="Tie-break when scores are exactly equal (default: mod)")
     ap.add_argument("--emis-qc-mode", choices=["union", "day", "night"], default="union",
                     help="Which QC to use for Emis scoring (default: union -- take the better of day/night)")

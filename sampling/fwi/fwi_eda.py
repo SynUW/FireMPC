@@ -75,9 +75,9 @@ def _numpy_kde(values: np.ndarray, x: np.ndarray,
     kernel = np.exp(-0.5 * diff ** 2) / (np.sqrt(2 * np.pi) * bw)
     return kernel.mean(axis=1)
 
-ERA5_DIR   = ("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+ERA5_DIR   = ("/s3/user/wildfire_dataset/self_built_materials/"
               "bc_raw_data_new_fast/drivers/ERA5")
-MODIS_DIR  = ("/s3/zhengsen/wildfire_dataset/self_built_materials/"
+MODIS_DIR  = ("/s3/user/wildfire_dataset/self_built_materials/"
               "bc_raw_data_new_fast/drivers/processed/MCD14A1_combined")
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "outputs")
 

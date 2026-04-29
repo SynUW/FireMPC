@@ -558,11 +558,11 @@ def merge_bands(ds1, ds2, output_path, overwrite=False):
 def main():
     parser = argparse.ArgumentParser(description='Merge TIFF files from two folders by stacking bands')
     
-    parser.add_argument('--input-dir1', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_b1237',
+    parser.add_argument('--input-dir1', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_b1237',
                        help='First input folder path')
-    parser.add_argument('--input-dir2', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_QA_state1km',
+    parser.add_argument('--input-dir2', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_QA_state1km',
                        help='Second input folder path (1 km QA, used as resolution reference)')
-    parser.add_argument('--output-dir', default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_b1237_withQA',
+    parser.add_argument('--output-dir', default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MYD09GA_b1237_withQA',
                        help='Output folder path')
     parser.add_argument('--overwrite', action='store_true',
                        help='Overwrite existing output files')

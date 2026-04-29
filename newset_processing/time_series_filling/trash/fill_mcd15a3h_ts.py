@@ -37,7 +37,7 @@ DATE_RE = re.compile(r"^(\d{4})_(\d{2})_(\d{2})\.tif$", re.IGNORECASE)
 
 def parse_args():
     ap = argparse.ArgumentParser(description="MCD15A3H forward-fill completion (per day)")
-    ap.add_argument("--folder", default='/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD15A3H_mosaic_249_filled_downsampled', help="Working directory (fill in place in the source directory)")
+    ap.add_argument("--folder", default='/mnt/raid/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/gee_patches_mosaic_reproject_unifyResolution_clip_5x_norm/MCD15A3H_mosaic_249_filled_downsampled', help="Working directory (fill in place in the source directory)")
     ap.add_argument("--start-date", default='2000-01-01', help="Start date, YYYY-MM-DD")
     ap.add_argument("--end-date", default='2024-12-31', help="End date, YYYY-MM-DD (inclusive)")
     ap.add_argument("--workers", type=int, default=8, help="Number of concurrent threads (I/O copy parallelism)")

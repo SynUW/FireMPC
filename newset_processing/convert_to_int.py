@@ -412,8 +412,8 @@ def _configure_logging(verbose: bool) -> None:
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Recursively convert GeoTIFFs to uint8 (GDAL) and mirror the directory structure into a new root directory.")
-    ap.add_argument("--root-in", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified_scaled', help="Input root directory (recursively traversed)")
-    ap.add_argument("--root-out", type=Path, default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified_scaled_int', help="Output root directory (preserves the directory structure)")
+    ap.add_argument("--root-in", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified_scaled', help="Input root directory (recursively traversed)")
+    ap.add_argument("--root-out", type=Path, default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/spatial_filled_5xdownsampled_merged_clipped_unified_scaled_int', help="Output root directory (preserves the directory structure)")
     ap.add_argument("--skip-dirname", nargs="*", default=['MCD12Q1_mosaic_downsampled_right_clipped_unified_filled', 'MCD14A1_combined_5xMaximumDown_merged_clipped_binary_right', 'MCD14A1_combined_5xMaximumDown_merged_clipped_binary_right_aligned'], help="Skip by directory name (matching subtrees have their files copied through unchanged)")
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 1)), help="Number of parallel processes (file-level parallelism)")
     ap.add_argument("--skip-existing", action="store_true", help="Skip if the output already exists and is non-empty")

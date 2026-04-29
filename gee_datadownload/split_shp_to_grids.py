@@ -182,9 +182,9 @@ def create_intersecting_grid(input_shapefile, output_shapefile, grid_size=400):
 # Usage example
 if __name__ == "__main__":
     # Configure file paths
-    input_file = "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_boundary/bc_boundary_without_sea.shp"  # Replace with your input shapefile path
-    # output_file = "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/Canada_boundary/Canada_Export_grids_200_1.shp"  # output file path
-    output_intersecting = "/mnt/raid/zhengsen/wildfire_dataset/self_built_materials/bc_boundary/bc_boundary_without_sea_4.shp"  # Output file containing only intersecting grid cells
+    input_file = "/mnt/raid/user/wildfire_dataset/self_built_materials/bc_boundary/bc_boundary_without_sea.shp"  # Replace with your input shapefile path
+    # output_file = "/mnt/raid/user/wildfire_dataset/self_built_materials/Canada_boundary/Canada_Export_grids_200_1.shp"  # output file path
+    output_intersecting = "/mnt/raid/user/wildfire_dataset/self_built_materials/bc_boundary/bc_boundary_without_sea_4.shp"  # Output file containing only intersecting grid cells
     
     # print("=== Shapefile grid splitting tool ===\n")
     

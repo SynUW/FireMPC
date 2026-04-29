@@ -59,7 +59,7 @@ _SENTINEL_NODATA = -9999.0
 
 # Consistent with dems_norm / dems_cal defaults: directory where the MERIT multi-band stack lives (default for --src / --dst)
 _DEFAULT_MERIT_STACK_DIR = Path(
-    "/s3/zhengsen/wildfire_dataset/self_built_materials"
+    "/s3/user/wildfire_dataset/self_built_materials"
     "/bc_raw_data_new_fast/drivers/merit_dem/dem_slope_aspect_hillshade"
 )
 _MERIT_1KM_STACK_NAME = "Canada_Full_DEM_1km_MERIT.tif"

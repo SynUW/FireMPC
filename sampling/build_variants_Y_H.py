@@ -17,8 +17,8 @@ new_test_negatives spec:
                 negatives carry firms_value=0, sample_type="negative", split="test".
 
 Outputs:
-    /s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_Y/samples_variant_Y.json
-    /s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_H/samples_variant_H.json
+    /s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_Y/samples_variant_Y.json
+    /s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_H/samples_variant_H.json
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ from pathlib import Path
 
 import numpy as np
 
-SAMPLING_DIR = Path("/mnt/raid/zhengsen/hackathons/dataset_building_entire_canada/sampling")
+SAMPLING_DIR = Path("/mnt/raid/user/hackathons/dataset_building_entire_canada/sampling")
 sys.path.insert(0, str(SAMPLING_DIR))
 
 # Lazy heavy imports done inside main() so module loads cheaply for tests.
@@ -39,11 +39,11 @@ sys.path.insert(0, str(SAMPLING_DIR))
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-A_JSON = Path("/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_A/samples_variant_A.json")
-G_JSON = Path("/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_G/samples_variant_G.json")
+A_JSON = Path("/s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_A/samples_variant_A.json")
+G_JSON = Path("/s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_G/samples_variant_G.json")
 
-OUT_Y_DIR = Path("/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_Y")
-OUT_H_DIR = Path("/s3/zhengsen/wildfire_dataset/h5_dataset/entire_can_v1/cache_H")
+OUT_Y_DIR = Path("/s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_Y")
+OUT_H_DIR = Path("/s3/user/wildfire_dataset/h5_dataset/entire_can_v1/cache_H")
 
 TEST_YEARS = (2023, 2024, 2025)
 FIRE_SEASON_MONTHS = range(5, 11)  # May .. Oct inclusive

@@ -432,9 +432,9 @@ def process_all(mod_dir, myd_dir, out_dir, workers=4, block_size=512, output_nod
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="MOD14A1 + MYD14A1 composite (fire detection; NoData read directly from TIFF)")
-    parser.add_argument("--mod_dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD14A1', help="MOD14A1 folder path")
-    parser.add_argument("--myd_dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD14A1', help="MYD14A1 folder path")
-    parser.add_argument("--out_dir", default='/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined', help="Output folder path")
+    parser.add_argument("--mod_dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD14A1', help="MOD14A1 folder path")
+    parser.add_argument("--myd_dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/MOD14A1', help="MYD14A1 folder path")
+    parser.add_argument("--out_dir", default='/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined', help="Output folder path")
     parser.add_argument("--workers", type=int, default=4, help="Number of parallel processes")
     parser.add_argument("--block_size", type=int, default=512, help="Block size")
     parser.add_argument("--output-nodata", type=int, default=None,

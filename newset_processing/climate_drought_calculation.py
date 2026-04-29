@@ -42,10 +42,10 @@ warnings.filterwarnings('ignore')
 
 # ===== Configuration parameters =====
 # Input directory (ERA5 data)
-ERA5_DIR = r'/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/ERA5'
+ERA5_DIR = r'/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/ERA5'
 
 # Output directory
-OUTPUT_DIR = r'/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/climate_drought'
+OUTPUT_DIR = r'/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/climate_drought'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(os.path.join(OUTPUT_DIR, 'VPD'), exist_ok=True)
 os.makedirs(os.path.join(OUTPUT_DIR, 'SPEI_3M'), exist_ok=True)

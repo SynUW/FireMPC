@@ -976,9 +976,9 @@ def main():
     
     parser = argparse.ArgumentParser(description='Merge multiple TIFF files within a folder')
     
-    parser.add_argument('--input-dir',default=r'/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined',
+    parser.add_argument('--input-dir',default=r'/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined',
                        help='Input directory containing TIFF files')
-    parser.add_argument('--output-dir', default=r'/s3/zhengsen/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined_merged',
+    parser.add_argument('--output-dir', default=r'/s3/user/wildfire_dataset/self_built_materials/bc_raw_data_new_fast/drivers/processed/MCD14A1_combined_merged',
                        help='Output directory')
     parser.add_argument('--output-name', default=None,
                        help='Output filename (default: auto-extract the date from input filenames)')
