@@ -1,0 +1,8 @@
+!config/*.json
+!vendor/PROVENANCE.json
+!vendor/canfirecast/artifacts/*.json
+.venv/
+.pytest_cache/
+.ruff_cache/
+**/__pycache__/
+data/

@@ -1,0 +1,14 @@
+[Unit]
+Description=Run the CanFireCast daily operational pipeline
+
+[Timer]
+# 09:00 UTC: past the measured MODIS standard-stream domain-completion lag for
+# the previous day, and past the IFS forecast publication.
+OnCalendar=*-*-* 09:00:00 UTC
+# Machine was off at 09:00 — still run, rather than skipping the day silently.
+Persistent=true
+RandomizedDelaySec=10m
+Unit=wildfire-daily.service
+
+[Install]
+WantedBy=timers.target

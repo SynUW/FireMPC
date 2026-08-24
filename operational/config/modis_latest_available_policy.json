@@ -1,0 +1,21 @@
+{
+  "version": "modis-latest-available-v1",
+  "mode": "latest_available",
+  "lookback_days": 45,
+  "warning_age_days": {
+    "NDVIEVI": 12,
+    "MCD15A3H": 12,
+    "MCD09GA": 12,
+    "MCD11A1": 11,
+    "MCD09CMG": 11,
+    "MCD12Q1": 1095
+  },
+  "maximum_age_days": {
+    "NDVIEVI": 45,
+    "MCD15A3H": 45,
+    "MCD09GA": 45,
+    "MCD11A1": 45,
+    "MCD09CMG": 45,
+    "MCD12Q1": 1095
+  }
+}

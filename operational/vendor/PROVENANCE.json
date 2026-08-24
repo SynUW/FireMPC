@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "files": {
+    "canfirecast/artifacts/cffdrs_aware_correction.json": {
+      "bytes": 149238,
+      "copy_date": "2026-08-18",
+      "experiment_id": "timesformer_ifs_cffdrs_aware_20260729",
+      "fitting_protocol": "cffdrs-aware residual correction, frozen alpha=0.625, no operational refit",
+      "redistribution_decision": "experiment output vendored for FireMPC operational package creation; explicit upstream license header absent",
+      "role": "fitted_parameters",
+      "sha256": "dd11aa6bae71e08dcd449c9c56d2179c4832e54689328c3c66d3af27e0a1b128",
+      "source_commit": null,
+      "source_path": "timesformer_ifs_cffdrs_aware_20260729/artifacts/cffdrs_aware_correction.json",
+      "source_project": "CanFireCast frozen experiment workflow",
+      "verbatim": true
+    },
+    "canfirecast/artifacts/ifs_to_era5_physical_adapter.json": {
+      "bytes": 1276565,
+      "copy_date": "2026-08-18",
+      "experiment_id": "timesformer_ifs_to_era5_physical_qm_20260729",
+      "fitting_protocol": "IFS-to-ERA5-Land physical quantile/adapter mapping, frozen parameters, no operational refit",
+      "redistribution_decision": "experiment output vendored for FireMPC operational package creation; explicit upstream license header absent",
+      "role": "fitted_parameters",
+      "sha256": "9a388b6b7c8efd6af21977750803519048ec7546a206a0ab63a6a53aa6962efe",
+      "source_commit": null,
+      "source_path": "timesformer_ifs_to_era5_physical_qm_20260729/artifacts/ifs_to_era5_physical_adapter.json",
+      "source_project": "CanFireCast frozen experiment workflow",
+      "verbatim": true
+    },
+    "canfirecast/frozen_repo/cffdrs_aware_correction.py": {
+      "bytes": 10905,
+      "copy_date": "2026-08-18",
+      "experiment_id": "timesformer_ifs_cffdrs_aware_20260729",
+      "redistribution_decision": "experiment inference code vendored for FireMPC operational package creation; explicit upstream license header absent",
+      "role": "inference_code",
+      "sha256": "0a7d764a6ed7300452459c6b11fa84b6f8f5dcaead1f4d6383270feb7955a793",
+      "source_commit": null,
+      "source_path": "timesformer_ifs_cffdrs_aware_20260729/frozen_repo/cffdrs_aware_correction.py",
+      "source_project": "CanFireCast frozen experiment workflow",
+      "verbatim": true
+    },
+    "canfirecast/frozen_repo/full10_ifs_domain_transform.py": {
+      "bytes": 13763,
+      "copy_date": "2026-08-18",
+      "experiment_id": "timesformer_ifs_cffdrs_aware_20260729",
+      "redistribution_decision": "experiment inference code vendored for FireMPC operational package creation; explicit upstream license header absent",
+      "role": "inference_code",
+      "sha256": "3b8b2c56cdd7a669e845fbfc8840539f8036c596b1a1f822f5375702a74e48b2",
+      "source_commit": null,
+      "source_path": "timesformer_ifs_cffdrs_aware_20260729/frozen_repo/full10_ifs_domain_transform.py",
+      "source_project": "CanFireCast frozen experiment workflow",
+      "verbatim": true
+    },
+    "canfirecast/frozen_repo/ifs_to_era5_physical_adapter.py": {
+      "bytes": 12909,
+      "copy_date": "2026-08-18",
+      "experiment_id": "timesformer_ifs_cffdrs_aware_20260729",
+      "redistribution_decision": "experiment inference code vendored for FireMPC operational package creation; explicit upstream license header absent",
+      "role": "inference_code",
+      "sha256": "de908bb48944e2316d69c26ad7c4c2e1d168a2fedcfcf5e5049b6112c342fc7e",
+      "source_commit": null,
+      "source_path": "timesformer_ifs_cffdrs_aware_20260729/frozen_repo/ifs_to_era5_physical_adapter.py",
+      "source_project": "CanFireCast frozen experiment workflow",
+      "verbatim": true
+    },
+    "fwi_module.py": {
+      "bytes": 12919,
+      "copy_date": "2026-08-18",
+      "redistribution_decision": "native top-level FireMPC dependency; not duplicated under operational/vendor",
+      "role": "top_level_firempc_fwi_dependency",
+      "sha256": "35970edbc5cbeb5df8ed93b5774e40e45e3b155269480df8662aaa27d85ad8e0",
+      "source_commit": null,
+      "source_path": "fwi/fwi_module.py",
+      "source_project": "FireMPC",
+      "verbatim": true
+    }
+  }
+}
