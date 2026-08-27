@@ -6,10 +6,10 @@ import numpy as np
 import rasterio
 from rasterio.transform import from_origin
 
-from wildfire.canfirecast import input_registry as registry
-from wildfire.canfirecast.weather_window import SOURCE_TO_CHANNEL, aligned_encoded_day
-from wildfire.canfirecast.state_ledger import install_state, state_path, validate_state
-from wildfire.canfirecast.pipeline import STAGES, resolve_target
+from canfirecast import input_registry as registry
+from canfirecast.weather_window import SOURCE_TO_CHANNEL, aligned_encoded_day
+from canfirecast.state_ledger import install_state, state_path, validate_state
+from canfirecast.pipeline import DEFAULT_STORAGE, STAGES, resolve_target
 
 
 def _raster(path: Path, count: int, descriptions=()):
@@ -49,3 +49,7 @@ def test_explicit_target_resolution():
 def test_pipeline_stops_after_validating_the_input_package():
     assert STAGES[-1] == "validate"
     assert "predict" not in STAGES
+
+
+def test_pipeline_defaults_to_the_deduplicated_monthly_store():
+    assert DEFAULT_STORAGE == "monthly"

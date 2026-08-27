@@ -2,8 +2,8 @@ from datetime import date
 
 import numpy as np
 
-from wildfire.canfirecast import input_registry as r
-from wildfire.modis.processing_registry import CHANNEL_NAMES as MODIS_NAMES
+from canfirecast import input_registry as r
+from modis.processing_registry import CHANNEL_NAMES as MODIS_NAMES
 
 
 def test_native_and_compact_mappings():

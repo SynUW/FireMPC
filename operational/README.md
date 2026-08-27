@@ -12,13 +12,17 @@ and recursively derive VPD and CFFDRS from certified `D-11` state. MODIS uses
 the frozen 17-channel processing and latest-available filling. Static layers
 and correction parameters come from an immutable release.
 
-The output is:
+The default output is a deduplicated, append-only monthly store:
 
 ```text
-$WILDFIRE_DATA_ROOT/packages/canfirecast/<D>/canfirecast_inputs.h5
+$WILDFIRE_DATA_ROOT/packages/canfirecast/YYYY-MM.h5
 ```
 
-It has schema version 1 and `uint8 (10,55,H,W)` data. Ten is the input-window
+Each date is stored once. A model window is reconstructed as schema-version-1
+`uint8 (10,55,H,W)` data, with target-dependent CFFDRS channels derived at read
+time from the certified D-11 state. The legacy materialized package remains
+available with `canfirecast pipeline --storage daily` and is written to
+`packages/canfirecast/<D>/canfirecast_inputs.h5`. Ten is the input-window
 length. The experiment name “15day” means fifteen separate forecast-horizon
 checkpoints, not fifteen input days. Before model execution,
 `CanFireCastIFSCommon` selects the exact 49 common channels
@@ -35,8 +39,7 @@ contract:
 cd ~/FireMPC
 conda env update -f environment.yml --prune
 conda activate gee_down
-export PYTHONPATH="$PWD/operational/src${PYTHONPATH:+:$PYTHONPATH}"
-python -m wildfire.cli --help
+python operational/cli.py --help
 ```
 
 Do not create an operational uv project or nested environment. Python
@@ -60,23 +63,23 @@ assets, state, downloads, packages, and logs stay outside Git.
 Provision copies and hashes every input into an immutable release:
 
 ```bash
-python -m wildfire.cli canfirecast provision create \
+python operational/cli.py canfirecast provision create \
   --release operational-v1 \
   --grid-template /path/to/national_grid.tif \
   --osm /path/to/OSM_2025.tif \
   --population /path/to/worldpop_2025.tif \
   --terrain /path/to/terrain.tif
-python -m wildfire.cli canfirecast provision verify --release operational-v1
+python operational/cli.py canfirecast provision verify --release operational-v1
 ```
 
 Import a trusted national state, including evidence, then advance without gaps
 through the target's `D-11` date:
 
 ```bash
-python -m wildfire.cli canfirecast state-ledger import-reference-fwi \
+python operational/cli.py canfirecast state-ledger import-reference-fwi \
   --source /path/to/authoritative/FWI_merged/2025_12_31.tif \
   --date 2025-12-31 --evidence 'authoritative ERA5-Land reference state'
-python -m wildfire.cli canfirecast state-ledger advance --through 2026-08-09
+python operational/cli.py canfirecast state-ledger advance --through 2026-08-09
 ```
 
 The pipeline rejects cold starts, uncertified state, skipped recursive days,
@@ -85,13 +88,17 @@ wrong state dates, grid mismatches, and altered release files.
 ## Daily package creation
 
 ```bash
-python -m wildfire.cli canfirecast pipeline \
+python operational/cli.py canfirecast pipeline \
   --target 2026-08-20 --release operational-v1
-python -m wildfire.daily --target today
+# Optional legacy per-target materialization:
+python operational/cli.py canfirecast pipeline \
+  --target 2026-08-20 --release operational-v1 --storage daily
+python operational/daily.py --target today
 ```
 
-The pipeline validates package schema, dimensions, channel order, dtype, dates,
-state lineage, geospatial metadata, validity data, and frozen dependency hashes.
+The pipeline validates reconstructed-window dimensions, channel order, dtype,
+dates, state lineage, geospatial metadata, validity data, and frozen dependency
+hashes.
 MODIS source dates and fill ages are retained in the H5 and manifests. A run
 uses release copies of both fitted correction JSON files and never refits them.
 

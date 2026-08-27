@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from wildfire.modis.preprocess import (
+from modis.preprocess import (
     Processor,
     Terminated,
     TileEntry,
@@ -20,7 +20,7 @@ from wildfire.modis.preprocess import (
     terminate_group,
     terminate_on_signal,
 )
-from wildfire.modis.processing_registry import ROUTES
+from modis.processing_registry import ROUTES
 
 
 def _alive(pid: int) -> bool:
@@ -215,7 +215,7 @@ def test_mcd12q1_historical_route_extracts_land_cover_without_qc_filter(
     import rasterio
     from rasterio.transform import from_origin
 
-    monkeypatch.setattr("wildfire.modis.preprocess.paths.WORK", str(tmp_path / "work"))
+    monkeypatch.setattr("modis.preprocess.paths.WORK", str(tmp_path / "work"))
     processor = _processor(tmp_path)
     day = date(2024, 1, 1)
     land = np.array([[17, 10], [0, 1]], dtype="uint8")
@@ -355,7 +355,7 @@ def test_bridge_carries_state_across_a_date_that_was_never_published(tmp_path):
 
 def test_bridge_refuses_a_date_that_has_complete_source_data(tmp_path):
     """A processable gap is a processing failure, not a publication hole."""
-    from wildfire.modis.preprocess import TileEntry
+    from modis.preprocess import TileEntry
 
     processor = _processor(tmp_path)
     processor.bridge_missing = True

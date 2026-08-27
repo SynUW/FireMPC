@@ -9,8 +9,8 @@ import pytest
 import rasterio
 from rasterio.transform import from_origin
 
-from wildfire.weather import derive as derive
-from wildfire.weather import registry as registry
+from weather import derive as derive
+from weather import registry as registry
 
 from tests.weather.synthetic import PIXEL, write_ifs_tile, write_source_tile  # noqa: F401
 

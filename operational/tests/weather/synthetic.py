@@ -12,7 +12,7 @@ import numpy as np
 import rasterio
 from rasterio.transform import from_origin
 
-from wildfire.weather import registry as registry
+from weather import registry as registry
 
 PIXEL = registry.RESOLUTION_M / 111319.49079327358
 

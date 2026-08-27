@@ -9,7 +9,7 @@
 
 The source work tree contained the reviewed operational-integration changes at
 snapshot time and was therefore not clean relative to the commit above. A
-sorted SHA-256 manifest of the selected source files (`src/wildfire`, `config`,
+sorted SHA-256 manifest of the selected source files (the application sources, `config`,
 `deploy`, `tests`, `vendor`, and `README.md`, excluding dashboard and cache
 files) has snapshot identity
 `0fd489a2f4810942240755407f1827667b4120fc2aba2fe8c29dfa95d8f487ad`.

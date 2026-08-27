@@ -12,9 +12,8 @@ User=quinn
 Group=quinn
 WorkingDirectory=/home/quinn/FireMPC
 Environment=PATH=/home/quinn/.conda/envs/gee_down/bin:/usr/local/bin:/usr/bin:/bin
-Environment=PYTHONPATH=/home/quinn/FireMPC/operational/src
 EnvironmentFile=/etc/wildfire-daily.env
-ExecStart=/home/quinn/.conda/envs/gee_down/bin/python -m wildfire.daily --target today
+ExecStart=/home/quinn/.conda/envs/gee_down/bin/python /home/quinn/FireMPC/operational/daily.py --target today
 # A full cold run is hours of downloads; only kill a genuinely wedged one.
 TimeoutStartSec=8h
 Nice=5

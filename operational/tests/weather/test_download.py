@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pytest
 
-from wildfire.weather import download as download
-from wildfire.weather import registry as registry
+from weather import download as download
+from weather import registry as registry
 
 
 class Flaky:

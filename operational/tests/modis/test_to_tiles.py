@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from wildfire.modis.to_tiles import _reduce_level1_blocks, pyramid_policy
+from modis.to_tiles import _reduce_level1_blocks, pyramid_policy
 
 
 def test_optical_pyramid_policy_is_per_band():

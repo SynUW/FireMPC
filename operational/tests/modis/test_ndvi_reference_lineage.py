@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import rasterio
 
-from wildfire.modis.processing_registry import CHANNELS_BY_PRODUCT
+from modis.processing_registry import CHANNELS_BY_PRODUCT
 
 REFERENCE_ROOT = Path(os.environ.get("WILDFIRE_MODIS_LINEAGE_ROOT", ""))
 REFLECTANCE = (

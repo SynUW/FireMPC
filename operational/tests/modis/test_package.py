@@ -7,8 +7,8 @@ import numpy as np
 import rasterio
 from rasterio.transform import from_origin
 
-from wildfire.modis.package import build_package, code_revision, resolve_source, target_dates
-from wildfire.modis.processing_registry import CHANNEL_NAMES, CHANNELS_BY_PRODUCT, ROUTES
+from modis.package import build_package, code_revision, resolve_source, target_dates
+from modis.processing_registry import CHANNEL_NAMES, CHANNELS_BY_PRODUCT, ROUTES
 
 
 def _fake_run(outputs):
@@ -21,7 +21,7 @@ def _fake_run(outputs):
 
 def test_code_revision_is_bare_sha_on_a_clean_tree(monkeypatch):
     monkeypatch.setattr(
-        "wildfire.modis.package.subprocess.run",
+        "modis.package.subprocess.run",
         _fake_run({"rev-parse": "abc123\n", "status": ""}),
     )
     assert code_revision() == "abc123"
@@ -29,7 +29,7 @@ def test_code_revision_is_bare_sha_on_a_clean_tree(monkeypatch):
 
 def test_code_revision_is_marked_dirty_when_the_tree_has_changes(monkeypatch):
     monkeypatch.setattr(
-        "wildfire.modis.package.subprocess.run",
+        "modis.package.subprocess.run",
         _fake_run({"rev-parse": "abc123\n", "status": " M modis_preprocess.py\n"}),
     )
     assert code_revision() == "abc123-dirty"
@@ -81,8 +81,20 @@ def test_daily_products_have_no_composite_fill(tmp_path):
         assert choice.status == "latency_fill", product
 
 
+def test_annual_land_cover_as_of_uses_its_daily_published_copy(tmp_path):
+    requested = date(2026, 6, 22)
+    daily_copy = tmp_path / "2026_06_22.tif"
+    choice = resolve_source(
+        "MCD12Q1", requested, {requested: daily_copy}, 1095,
+        observations={date(2024, 1, 1)}, as_of=date(2026, 7, 2),
+    )
+    assert choice.path == daily_copy
+    assert choice.source_date == date(2024, 1, 1)
+    assert choice.status == "stale_by_design"
+
+
 def test_policy_covers_every_package_product():
-    from wildfire.modis.package import load_fill_policy
+    from modis.package import load_fill_policy
 
     policy = load_fill_policy()["maximum_age_days"]
     assert set(policy) == set(ROUTES)
@@ -129,7 +141,7 @@ def test_composite_fill_is_not_reported_as_a_fresh_observation(tmp_path):
     from it reports eight of ten MCD15A3H dates as freshly observed when only
     two were real anchors.
     """
-    from wildfire.modis.package import resolve_source
+    from modis.package import resolve_source
 
     scaled = {date(2026, 7, 30) + timedelta(days=n): tmp_path / f"{n}.tif" for n in range(4)}
     anchors = {date(2026, 7, 28), date(2026, 8, 1)}
@@ -149,7 +161,7 @@ def test_composite_fill_is_not_reported_as_a_fresh_observation(tmp_path):
 
 
 def test_observation_dates_reads_unified_and_ndvievi_inherits_mcd09ga(tmp_path):
-    from wildfire.modis.package import observation_dates
+    from modis.package import observation_dates
 
     (tmp_path / "MCD09GA").mkdir(parents=True)
     (tmp_path / "MCD09GA" / "2026_08_01.tif").touch()

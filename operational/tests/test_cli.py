@@ -17,14 +17,14 @@ import pytest
 import typer
 from typer.testing import CliRunner
 
-from wildfire import vendorpaths
-from wildfire.cli import app
+import vendorpaths
+from cli import app
 
 PIPELINES = [
-    "src/wildfire/modis/pipeline.py",
-    "src/wildfire/weather/pipeline.py",
-    "src/wildfire/canfirecast/pipeline.py",
-    "src/wildfire/canfirecast/state_ledger.py",
+    "modis/pipeline.py",
+    "weather/pipeline.py",
+    "canfirecast/pipeline.py",
+    "canfirecast/state_ledger.py",
 ]
 
 
@@ -39,22 +39,29 @@ def _command_paths(typer_app, prefix=()):
 ALL_PATHS = sorted(_command_paths(app))
 
 
+CLI_ELEMENT = "str(vendorpaths.CLI)"
+
+
 def _invocations(path):
-    """The ("-m", "wildfire.cli", ...) argv lists built in one source file."""
-    tree = ast.parse((vendorpaths.REPO_ROOT / path).read_text())
+    """The `[sys.executable, str(vendorpaths.CLI), ...]` argv lists in one file."""
+    tree = ast.parse((vendorpaths.OPERATIONAL_ROOT / path).read_text())
     for node in ast.walk(tree):
         if not isinstance(node, ast.List):
             continue
-        literals = [e.value for e in node.elts if isinstance(e, ast.Constant) and isinstance(e.value, str)]
-        if "-m" in literals and "wildfire.cli" in literals:
-            tail = literals[literals.index("wildfire.cli") + 1:]
-            # Stop at the first option; the rest are arguments, not command names.
-            names = []
-            for token in tail:
-                if token.startswith("-"):
-                    break
-                names.append(token)
-            yield tuple(names)
+        marker = next((i for i, e in enumerate(node.elts)
+                       if ast.unparse(e) == CLI_ELEMENT), None)
+        if marker is None:
+            continue
+        # The command names follow the script path directly.  Stop at the first
+        # option or computed argument; neither is part of the command.
+        names = []
+        for element in node.elts[marker + 1:]:
+            if not (isinstance(element, ast.Constant) and isinstance(element.value, str)):
+                break
+            if element.value.startswith("-"):
+                break
+            names.append(element.value)
+        yield tuple(names)
 
 
 def test_the_tree_has_the_expected_shape():
@@ -72,16 +79,16 @@ def test_the_tree_has_the_expected_shape():
 def test_every_pipeline_invocation_names_a_real_command(path):
     """The check that would have caught a stale `HERE / "script.py"` rewrite."""
     found = list(_invocations(path))
-    assert found, f"{path} builds no wildfire.cli invocation"
+    assert found, f"{path} builds no cli.py invocation"
     for names in found:
         assert names in ALL_PATHS, (
-            f"{path} invokes `wildfire {' '.join(names)}`, which is not a command. "
+            f"{path} invokes `cli.py {' '.join(names)}`, which is not a command. "
             f"Known: {[' '.join(p) for p in ALL_PATHS]}")
 
 
 def test_no_pipeline_still_invokes_a_bare_script():
     for path in PIPELINES:
-        source = (vendorpaths.REPO_ROOT / path).read_text()
+        source = (vendorpaths.OPERATIONAL_ROOT / path).read_text()
         assert 'HERE / "' not in source, f"{path} still resolves a sibling script by path"
 
 
@@ -92,18 +99,19 @@ def test_every_command_renders_help(path):
     assert result.exit_code == 0, result.output
 
 
-def test_the_console_script_is_installed():
-    out = subprocess.run([sys.executable, "-m", "wildfire.cli", "--help"],
+def test_the_cli_script_runs_from_a_bare_interpreter():
+    """No PYTHONPATH, no install: `python operational/cli.py` must stand alone."""
+    out = subprocess.run([sys.executable, str(vendorpaths.CLI), "--help"],
                          capture_output=True, text=True, check=True).stdout
     for domain in ("modis", "weather", "canfirecast"):
         assert domain in out
 
 
 def test_every_readme_invocation_names_a_real_command():
-    """Keep documented ``python -m wildfire.cli`` commands synchronized."""
+    """Keep documented ``python operational/cli.py`` commands synchronized."""
     readme = (vendorpaths.OPERATIONAL_ROOT / "README.md").read_text()
     invocations = []
-    prefix = "python -m wildfire.cli "
+    prefix = "python operational/cli.py "
     for line in readme.splitlines():
         line = line.strip().removesuffix("\\").strip()
         if not line.startswith(prefix):
@@ -115,6 +123,6 @@ def test_every_readme_invocation_names_a_real_command():
             names.append(token)
         if names:  # top-level ``--help`` is not a command leaf
             invocations.append((line, tuple(names)))
-    assert invocations, "README documents no wildfire CLI invocations"
+    assert invocations, "README documents no cli.py invocations"
     for line, names in invocations:
         assert names in ALL_PATHS, f"README line is not a command: {line}"

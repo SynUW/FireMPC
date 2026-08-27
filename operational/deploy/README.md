@@ -1,10 +1,11 @@
 # Daily operational run under systemd
 
-The service works from `/home/quinn/FireMPC`, adds `operational/src` to
-`PYTHONPATH`, and invokes the `gee_down` conda interpreter directly:
+The service works from `/home/quinn/FireMPC` and invokes the `gee_down` conda
+interpreter on the runner script directly -- there is nothing to install and no
+`PYTHONPATH` to set:
 
 ```bash
-/path/to/conda/envs/gee_down/bin/python -m wildfire.daily --target today
+/path/to/conda/envs/gee_down/bin/python operational/daily.py --target today
 ```
 
 The daily runner advances the certified state ledger, creates and validates the

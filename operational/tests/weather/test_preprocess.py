@@ -10,9 +10,9 @@ import numpy as np
 import pytest
 import rasterio
 
-from wildfire.weather import derive as derive
-from wildfire.weather import preprocess as wp
-from wildfire.weather import registry as registry
+from weather import derive as derive
+from weather import preprocess as wp
+from weather import registry as registry
 from tests.weather.synthetic import write_ifs_tile, write_source_tile
 
 

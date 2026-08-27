@@ -7,8 +7,8 @@ import pytest
 import rasterio
 from rasterio.transform import from_origin
 
-from wildfire.modis.preprocess import load_complete_tiles
-from wildfire.modis.purge import (
+from modis.preprocess import load_complete_tiles
+from modis.purge import (
     load_tiling_history,
     main,
     purge_date,
@@ -95,7 +95,7 @@ def test_dates_inside_the_retention_window_are_never_validated(tmp_path):
         validated.append(entries[0].day)
         return []
 
-    from wildfire.modis import purge as modis_purge_raw
+    from modis import purge as modis_purge_raw
 
     original = modis_purge_raw._tile_failures
     modis_purge_raw._tile_failures = _spy
@@ -184,7 +184,7 @@ def test_purge_date_execute_removes_granules_and_empty_directory(tmp_path):
 
 
 def test_main_end_to_end_respects_retention_window(tmp_path, monkeypatch):
-    monkeypatch.setattr("wildfire.modis.purge.paths.WORK", str(tmp_path / "work"))
+    monkeypatch.setattr("modis.purge.paths.WORK", str(tmp_path / "work"))
     old_day = date.today() - timedelta(days=200)
     recent_day = date.today() - timedelta(days=10)
     manifest = _tiling_report(tmp_path, [

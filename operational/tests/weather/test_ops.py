@@ -10,10 +10,10 @@ import pytest
 import rasterio
 from rasterio.transform import from_origin
 
-from wildfire.weather import pipeline as pipeline
-from wildfire.weather import latency as latency
-from wildfire.weather import purge as purge
-from wildfire.weather import registry as registry
+from weather import pipeline as pipeline
+from weather import latency as latency
+from weather import purge as purge
+from weather import registry as registry
 
 
 # ---------------------------------------------------------------------------

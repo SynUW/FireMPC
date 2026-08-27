@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from wildfire import vendorpaths
-from wildfire.weather import registry as registry
+import vendorpaths
+from weather import registry as registry
 
 ROOT = vendorpaths.OPERATIONAL_ROOT
 FIREMPC = vendorpaths.FIREMPC_ROOT

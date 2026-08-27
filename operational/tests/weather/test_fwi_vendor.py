@@ -7,8 +7,8 @@ import json
 from pathlib import Path
 
 import numpy as np
-from wildfire import vendorpaths
-from wildfire.weather import derive as derive
+import vendorpaths
+from weather import derive as derive
 
 VENDOR = vendorpaths.VENDOR
 PROVENANCE = json.loads((VENDOR / "PROVENANCE.json").read_text())

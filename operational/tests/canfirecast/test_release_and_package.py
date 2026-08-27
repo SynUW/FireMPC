@@ -8,10 +8,10 @@ import h5py
 import numpy as np
 import pytest
 
-from wildfire.canfirecast import input_registry as registry
-from wildfire.canfirecast.package import build_package, validate_package
-from wildfire.canfirecast.provision import verify_release
-from wildfire.modis.processing_registry import CHANNEL_NAMES as MODIS_NAMES
+from canfirecast import input_registry as registry
+from canfirecast.package import build_package, validate_package
+from canfirecast.provision import verify_release
+from modis.processing_registry import CHANNEL_NAMES as MODIS_NAMES
 
 
 def _strings(h5: h5py.File, name: str, values) -> None:

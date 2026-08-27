@@ -1,10 +1,10 @@
-from wildfire.modis.processing_registry import (
+from modis.processing_registry import (
     CHANNELS,
     LINEAGE,
     ROUTES,
     require_operational_lineage,
 )
-from wildfire.modis.registry import OPERATIONAL_EXPORTS, PRODUCTS
+from modis.registry import OPERATIONAL_EXPORTS, PRODUCTS
 
 
 def test_operational_exports_are_distinct_ten_source_profile():
