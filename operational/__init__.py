@@ -4,7 +4,7 @@ This directory is a plain FireMPC stage folder, like `sampling/` and
 `newset_processing/`: nothing is installed, and the modules import each other
 by bare name off `operational/` rather than through a package prefix.  Scripts
 run below a domain directory add that root to `sys.path` themselves; `cli.py`
-and `daily.py` sit at the top, where the interpreter has already done it.
+and `fill.py` sit at the top, where the interpreter has already done it.
 
 Three domain directories sit under this one:
 
@@ -14,7 +14,11 @@ Three domain directories sit under this one:
 * `canfirecast` -- assembly of the 55-channel model input and the certified
                    state ledger.
 
-`paths` holds the filesystem contract shared by all three; `vendorpaths`
-resolves the repository-relative trees (vendor/, config/) the domains read,
-and `vendorpaths.CLI` is the script the pipelines re-invoke their stages by.
+`fill.py` is the application: it drives all three over a range of dates and
+lands the result in the monthly store.  Three modules at this level are shared
+by every domain: `paths` holds the filesystem contract, `vendorpaths` resolves
+the repository-relative trees (vendor/, config/) the domains read, and `ops`
+holds the plumbing every stage needs -- hashing, durable manifest writes, the
+subprocess runner, and the `--from-stage`/`--to-stage` slice.  A stage is
+re-invoked as a subprocess through `ops.cli`, which is `vendorpaths.CLI`.
 """

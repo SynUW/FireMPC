@@ -47,17 +47,11 @@ MODEL_WEATHER_STAGE_DIRS = {
     name: os.path.join(PROCESSED_MODEL_WEATHER, name)
     for name in ("base_corrected", "cffdrs_corrected", "encoded")
 }
+# The month-labelled store this application exists to fill: YYYY-MM.h5, one
+# date each, append-only.  Published windows are written wherever the caller
+# asks for them and are not kept here.
 CANFIRECAST_PACKAGES = os.path.join(DATA_ROOT, "packages", "canfirecast")
-# The model reads one window at a time, for today. The monthly store is the
-# archive; this is the single file the model is pointed at, rewritten (by
-# atomic replace) at the end of every run, so a consumer never has to know
-# today's date to find its input.
-CANFIRECAST_DAILY_PACKAGE = os.path.join(CANFIRECAST_PACKAGES, "daily.h5")
-# Hindcast sweeps write one <D>.h5 per target here, so replaying a past month
-# never disturbs the single file operations point the model at.
-CANFIRECAST_HINDCAST_PACKAGES = os.path.join(CANFIRECAST_PACKAGES, "hindcast")
 CANFIRECAST_ASSETS = os.path.join(DATA_ROOT, "assets", "canfirecast")
-CANFIRECAST_PREDICTIONS = os.path.join(DATA_ROOT, "predictions", "canfirecast")
 CANFIRECAST_PROCESSING_REPORTS = os.path.join(REPORTS, "canfirecast_processing")
 
 # Read-only national reference raster used as the alignment grid.

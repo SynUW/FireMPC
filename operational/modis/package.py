@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
@@ -27,6 +26,7 @@ if str(OPERATIONAL) not in sys.path:
     sys.path.insert(0, str(OPERATIONAL))
 
 import paths, vendorpaths
+from ops import atomic_json, sha256
 from modis.processing_registry import (
     CHANNEL_NAMES,
     CHANNELS,
@@ -177,14 +177,6 @@ def resolve_source(
     else:
         status = "latency_fill"
     return SourceChoice(product, requested, origin, available[source], age, status)
-
-
-def sha256(path: Path, block_size: int = 1024 * 1024) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(block_size), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def code_revision() -> str:
@@ -371,9 +363,9 @@ def build_package(
     manifest["created_utc"] = creation
     manifest["code_revision"] = code_revision()
     manifest["artifacts"] = {"modis_inputs.h5": {"sha256": sha256(final_h5), "bytes": final_h5.stat().st_size}}
-    _atomic_json(destination / "manifest.json", manifest)
+    atomic_json(destination / "manifest.json", manifest)
     validation = validate_package(destination, template_path)
-    _atomic_json(destination / "validation.json", validation)
+    atomic_json(destination / "validation.json", validation)
     return final_h5
 
 
@@ -477,20 +469,6 @@ def determinism_report(
     }
 
 
-def _atomic_json(path: Path, value: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, indent=2, sort_keys=True)
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(name, path)
-    finally:
-        Path(name).unlink(missing_ok=True)
-
-
 @app.command()
 def main(
     target: Annotated[str, typer.Option("--target", help="Prediction date D (YYYY-MM-DD).")],
@@ -531,7 +509,7 @@ def main(
             day, scaled_root=scaled_root, template_path=template,
             unified_root=unified_root, policy_path=fill_policy,
         )
-        _atomic_json(package_root / target / "determinism.json", report)
+        atomic_json(package_root / target / "determinism.json", report)
         if not report["deterministic"]:
             raise RuntimeError(
                 "package is not reproducible: " + "; ".join(report["differences"]))

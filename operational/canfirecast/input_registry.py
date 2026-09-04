@@ -18,7 +18,7 @@ if str(OPERATIONAL) not in sys.path:
     sys.path.insert(0, str(OPERATIONAL))
 
 import vendorpaths
-import hashlib
+from ops import sha256
 import ast
 import json
 from dataclasses import dataclass
@@ -167,14 +167,6 @@ def expand_compact49(compact, *, fill_value: int = 0):
         out[..., COMPACT49_TO_NATIVE55] = arr
         return out
     raise ValueError(f"cannot find a 49-channel axis in shape {arr.shape}")
-
-
-def sha256(path: str | Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def provenance_files() -> dict:

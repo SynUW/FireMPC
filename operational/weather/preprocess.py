@@ -36,8 +36,6 @@ its 18 channels and the policy for the other five is unresolved; see
 from __future__ import annotations
 
 import contextlib
-import hashlib
-import json
 import os
 import shutil
 import subprocess
@@ -60,6 +58,7 @@ if str(OPERATIONAL) not in sys.path:
     sys.path.insert(0, str(OPERATIONAL))
 
 import paths, vendorpaths
+from ops import atomic_json, sha256, utc_now
 from weather import derive as derive
 from weather import registry as registry
 
@@ -67,25 +66,6 @@ app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
 
 FIREMPC = vendorpaths.FIREMPC_NEWSET
 DEFAULT_FIREMPC_PYTHON = Path(os.environ.get("FIREMPC_PYTHON", sys.executable))
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1 << 20), b""):
-            digest.update(block)
-    return digest.hexdigest()
-
-
-def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
-def _atomic_json(path: Path, value: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(f".{os.getpid()}.tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True))
-    os.replace(temporary, path)
 
 
 def _dates(start: date, end: date):
@@ -241,7 +221,7 @@ class Processor:
             "date": day.isoformat(),
             "stage": stage,
             "started_utc": started,
-            "ended_utc": _utc_now(),
+            "ended_utc": utc_now(),
             "status": status,
             "inputs": [{"path": str(p), "sha256": sha256(p)} for p in inputs if p.is_file()],
             "outputs": [{"path": str(p), "sha256": sha256(p)} for p in outputs if p.is_file()],
@@ -250,7 +230,7 @@ class Processor:
             "band_ranges": self._range_report(outputs) if status == "complete" else None,
         }
         manifest.update(extra or {})
-        _atomic_json(self._manifest_path(product, day, stage), manifest)
+        atomic_json(self._manifest_path(product, day, stage), manifest)
 
     @staticmethod
     def _range_report(outputs: list[Path]) -> list[dict]:
@@ -448,7 +428,7 @@ class Processor:
 
     # -- driver ------------------------------------------------------------
     def run_stage(self, product: str, day: date, stage: str) -> None:
-        started = _utc_now()
+        started = utc_now()
         inputs: list[Path] = []
         outputs: list[Path] = []
         command = None

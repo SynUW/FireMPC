@@ -11,9 +11,9 @@ This module keeps one file per calendar month holding each date once:
 
 `read_window` reassembles the exact `(10, 55, H, W)` uint8 tensor the package
 contract specifies, so nothing downstream of it can tell the difference, and
-`publish_window` writes that tensor out as an ordinary package at the fixed
-daily path the model reads -- one window, replaced each day, with the history
-kept only here.
+`publish_window` writes that tensor out as an ordinary package wherever the
+caller asks.  That pair is the store's read API: this repository fills the
+store, and inference code elsewhere publishes the window it wants out of it.
 
 What is stored, and what is not
 -------------------------------
@@ -55,7 +55,7 @@ erring the other way would quietly flatter every hindcast.
 from __future__ import annotations
 
 import calendar
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import h5py
@@ -416,8 +416,6 @@ from typing import Annotated  # noqa: E402
 
 app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
 DEFAULT_ROOT = Path(paths.CANFIRECAST_PACKAGES)
-DEFAULT_DAILY_PACKAGE = Path(paths.CANFIRECAST_DAILY_PACKAGE)
-DEFAULT_HINDCAST_ROOT = Path(paths.CANFIRECAST_HINDCAST_PACKAGES)
 
 
 def _run_paths(target: date) -> tuple[Path, Path]:
@@ -502,7 +500,7 @@ def _package_crs(value) -> str:
 
 
 def write_window_package(output: Path, data, validity, provenance: dict) -> Path:
-    """Materialize a read window in the daily-package layout."""
+    """Materialize a read window in the package layout, by atomic replace."""
     import os
     output.parent.mkdir(parents=True, exist_ok=True)
     tmp = output.with_suffix(output.suffix + ".tmp")
@@ -534,15 +532,16 @@ def write_window_package(output: Path, data, validity, provenance: dict) -> Path
 
 def publish_window(
     root: Path, target: date, *, static_h5: Path, state_h5: Path,
-    correction_artifact: Path | None = None,
-    output: Path = DEFAULT_DAILY_PACKAGE,
+    correction_artifact: Path | None = None, output: Path,
 ) -> Path:
-    """Materialize the model's input for `target` at the fixed daily path.
+    """Materialize one target's model input out of the store.
 
-    The store is the archive; the model wants one ten-day window, today's.
-    This reads that window back, validates it, and lands it at `output` --
-    the same path every day, replaced atomically, so a reader either sees
-    yesterday's package or today's and never a half-written file.
+    The store is the archive; a model reads one ten-day window.  This reads
+    that window back, validates it, and lands it at `output` by atomic
+    replace, so a reader sees either the previous file or the new one and
+    never a half-written package.  Channels 19-25 are re-derived here from
+    `target`'s own certified D-11 state, which is why a window is published
+    per target rather than sliced out of a dense multi-date file.
     """
     data, validity, provenance = read_window(
         root, target, static_h5=static_h5, state_h5=state_h5,
@@ -556,65 +555,18 @@ def publish_window(
 def publish_command(
     target: Annotated[str, typer.Option("--target", help="Prediction date D to publish.")],
     static: Annotated[Path, typer.Option("--static")],
+    output: Annotated[Path, typer.Option("--output", help="Package path; replaced atomically.")],
     root: Annotated[Path, typer.Option("--root")] = DEFAULT_ROOT,
     state_root: Annotated[Path, typer.Option("--state-root")] = DEFAULT_LEDGER,
     correction_artifact: Annotated[Path | None, typer.Option("--correction-artifact")] = None,
-    output: Annotated[Path, typer.Option("--output", help="Daily package path; overwritten in place.")] = DEFAULT_DAILY_PACKAGE,
 ) -> None:
-    """Write the daily package the model reads, replacing the previous day's."""
+    """Write one target's ten-day window out as a model-input package."""
     day = date.fromisoformat(target)
     typer.echo(str(publish_window(
         root, day, static_h5=static,
         state_h5=state_path(state_root, registry.state_date(day)),
         correction_artifact=correction_artifact, output=output,
     )))
-
-
-@app.command("replay")
-def replay_command(
-    start: Annotated[str, typer.Option("--start", help="First prediction date D to replay.")],
-    end: Annotated[str, typer.Option("--end", help="Last prediction date D, inclusive.")],
-    static: Annotated[Path, typer.Option("--static")],
-    root: Annotated[Path, typer.Option("--root")] = DEFAULT_ROOT,
-    state_root: Annotated[Path, typer.Option("--state-root")] = DEFAULT_LEDGER,
-    correction_artifact: Annotated[Path | None, typer.Option("--correction-artifact")] = None,
-    output_dir: Annotated[Path, typer.Option("--output-dir", help="One <D>.h5 per target.")] = DEFAULT_HINDCAST_ROOT,
-    skip_existing: Annotated[bool, typer.Option("--skip-existing/--rebuild")] = True,
-    skip_incomplete: Annotated[bool, typer.Option("--skip-incomplete", help="Replay what the store covers instead of refusing the sweep.")] = False,
-) -> None:
-    """Replay a range of past targets out of the store, for historical testing.
-
-    Every date is already stored; a target costs one window read plus the
-    CFFDRS recursion, and nothing is downloaded or reprocessed.  Output goes
-    beside the store rather than to the daily package, so a sweep over last
-    month never hands the model a stale window.
-    """
-    first, last = date.fromisoformat(start), date.fromisoformat(end)
-    if last < first:
-        raise typer.BadParameter("--end precedes --start")
-    targets = [first + timedelta(days=n) for n in range((last - first).days + 1)]
-    blocked = {day: missing_inputs(root, day, state_root=state_root) for day in targets}
-    blocked = {day: reasons for day, reasons in blocked.items() if reasons}
-    for day, reasons in blocked.items():
-        typer.echo(f"{day}: not replayable, missing {', '.join(reasons)}", err=True)
-    if blocked and not skip_incomplete:
-        raise RuntimeError(
-            f"{len(blocked)} of {len(targets)} targets are not backed by the store; "
-            "ingest the missing dates or pass --skip-incomplete")
-    for day in targets:
-        if day in blocked:
-            continue
-        output = Path(output_dir) / f"{day.isoformat()}.h5"
-        if output.is_file() and skip_existing:
-            typer.echo(f"{day} reused {output}")
-            continue
-        publish_window(
-            root, day, static_h5=static,
-            state_h5=state_path(state_root, registry.state_date(day)),
-            correction_artifact=correction_artifact, output=output,
-        )
-        typer.echo(f"{day} {output}")
-    typer.echo(f"{len(targets) - len(blocked)} of {len(targets)} target(s) replayed into {output_dir}")
 
 
 @app.command("status")

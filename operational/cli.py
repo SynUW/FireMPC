@@ -26,7 +26,7 @@ import sys
 
 import typer
 
-import daily as daily_run
+import fill as fill_run
 from canfirecast import package as canfirecast_package
 from canfirecast import pipeline as canfirecast_pipeline
 from canfirecast import provision as canfirecast_provision
@@ -136,9 +136,9 @@ _attach(model, "derive", model_cffdrs_derive, "Derive the CFFDRS-aware corrected
 
 
 # ---------------------------------------------------------------------------
-# Unattended
+# What the application is for
 # ---------------------------------------------------------------------------
-_attach(app, "daily", daily_run, "The unattended daily run, as invoked by the systemd timer.")
+_attach(app, "fill", fill_run, "Fill a range of dates into the monthly CanFireCast store.")
 
 
 if __name__ == "__main__":

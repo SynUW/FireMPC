@@ -45,24 +45,12 @@ OPERATIONAL = Path(__file__).resolve().parents[1]
 if str(OPERATIONAL) not in sys.path:
     sys.path.insert(0, str(OPERATIONAL))
 
-import paths
+import ops, paths
 from weather import registry as registry
 
 app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
 
 DATE_IN_NAME = re.compile(r"(\d{4})_(\d{2})_(\d{2})")
-
-
-def _lock(work_root: Path):
-    work_root.mkdir(parents=True, exist_ok=True)
-    path = work_root / "weather_purge.lock"
-    handle = path.open("a+")
-    try:
-        fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except BlockingIOError as exc:
-        handle.close()
-        raise RuntimeError(f"another weather_purge run holds {path}") from exc
-    return handle
 
 
 def stage_dir(data_root: Path, stage: str, product: str) -> Path:
@@ -142,7 +130,7 @@ def main(
     if "scaled" in wanted_stages:
         raise typer.BadParameter("`scaled` is the product this job protects, not a purge target")
 
-    handle = _lock(Path(paths.WORK))
+    handle = ops.lock(Path(paths.WORK), "weather_purge")
     try:
         cutoff = datetime.now(timezone.utc).date() - timedelta(days=retention_days)
         total_files, total_bytes = 0, 0

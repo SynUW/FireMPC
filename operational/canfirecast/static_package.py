@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import tempfile
@@ -24,6 +23,7 @@ if str(OPERATIONAL) not in sys.path:
 
 from canfirecast import input_registry as registry
 import paths
+from ops import sha256
 
 app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
 STATIC_NAMES = tuple(registry.CHANNEL_NAMES[i] for i in registry.STATIC_CHANNELS)
@@ -31,14 +31,6 @@ DEFAULT_BASE = Path("")
 DEFAULT_OSM = Path(os.environ.get("WILDFIRE_STATIC_OSM", ""))
 DEFAULT_POPULATION = Path(os.environ.get("WILDFIRE_STATIC_WORLDPOP", ""))
 DEFAULT_TERRAIN = Path(os.environ.get("WILDFIRE_STATIC_TERRAIN", ""))
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1 << 20), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def _check_grid(source, template, path: Path) -> None:

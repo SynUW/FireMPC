@@ -21,6 +21,7 @@ import vendorpaths
 from cli import app
 
 PIPELINES = [
+    "fill.py",
     "modis/pipeline.py",
     "weather/pipeline.py",
     "canfirecast/pipeline.py",
@@ -42,26 +43,52 @@ ALL_PATHS = sorted(_command_paths(app))
 CLI_ELEMENT = "str(vendorpaths.CLI)"
 
 
+def _leading_names(elements):
+    """The command names at the head of an argv tail, stopping at the first option."""
+    names = []
+    for element in elements:
+        if not (isinstance(element, ast.Constant) and isinstance(element.value, str)):
+            break
+        if element.value.startswith("-"):
+            break
+        names.append(element.value)
+    return tuple(names)
+
+
+def _is_cli_helper(func):
+    """`cli(...)`, however the module reached it: bare name or `ops.cli`."""
+    if isinstance(func, ast.Name):
+        return func.id == "cli"
+    return isinstance(func, ast.Attribute) and func.attr == "cli"
+
+
 def _invocations(path):
-    """The `[sys.executable, str(vendorpaths.CLI), ...]` argv lists in one file."""
+    """Every cli.py invocation in one file, as a tuple of command names.
+
+    Two spellings, because the modules write them two ways: the shared
+    `ops.cli("canfirecast", "store", "ingest", ...)` helper, and the literal
+    `[sys.executable, str(vendorpaths.CLI), ...]` argv list it replaced -- kept
+    here so a module that goes back to writing one out longhand is still read.
+    """
     tree = ast.parse((vendorpaths.OPERATIONAL_ROOT / path).read_text())
     for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and _is_cli_helper(node.func):
+            names = _leading_names(node.args)
+            if names:
+                yield names
+            continue
         if not isinstance(node, ast.List):
             continue
         marker = next((i for i, e in enumerate(node.elts)
                        if ast.unparse(e) == CLI_ELEMENT), None)
         if marker is None:
             continue
+        tail = node.elts[marker + 1:]
+        if tail and isinstance(tail[0], ast.Starred):
+            continue  # the `cli(*args)` helper's own body, not an invocation
         # The command names follow the script path directly.  Stop at the first
         # option or computed argument; neither is part of the command.
-        names = []
-        for element in node.elts[marker + 1:]:
-            if not (isinstance(element, ast.Constant) and isinstance(element.value, str)):
-                break
-            if element.value.startswith("-"):
-                break
-            names.append(element.value)
-        yield tuple(names)
+        yield _leading_names(tail)
 
 
 def test_the_tree_has_the_expected_shape():
@@ -70,7 +97,9 @@ def test_the_tree_has_the_expected_shape():
     assert ("canfirecast", "pipeline") in ALL_PATHS
     assert ("canfirecast", "model", "correct") in ALL_PATHS
     assert ("canfirecast", "state-ledger", "advance") in ALL_PATHS
+    assert ("fill",) in ALL_PATHS, "the range fill is what this application is for"
     assert ("canfirecast", "inference") not in ALL_PATHS
+    assert ("daily",) not in ALL_PATHS
     assert not any(path[0] == "dashboard" for path in ALL_PATHS)
     assert len(ALL_PATHS) == len(set(ALL_PATHS)), "duplicate command path"
 

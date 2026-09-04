@@ -8,7 +8,6 @@ FireMPC lineage and run with its pinned interpreter.
 from __future__ import annotations
 
 import fcntl
-import hashlib
 import json
 import os
 import re
@@ -38,6 +37,7 @@ if str(OPERATIONAL) not in sys.path:
     sys.path.insert(0, str(OPERATIONAL))
 
 import paths, vendorpaths
+from ops import atomic_json, sha256, utc_now
 from modis.processing_registry import ROUTES, require_operational_lineage
 
 app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
@@ -93,32 +93,6 @@ class TileEntry:
     day: date
     tile: int
     path: Path
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
-
-
-def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
-def _atomic_json(path: Path, value: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            json.dump(value, handle, indent=2, sort_keys=True)
-            handle.write("\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        Path(temporary).unlink(missing_ok=True)
 
 
 def load_complete_tiles(
@@ -588,7 +562,7 @@ class Processor:
         manifest = {
             "schema_version": 1, "run_id": self.run_id, "product": product,
             "date": day.isoformat(), "stage": stage, "started_utc": started,
-            "ended_utc": _utc_now(), "status": status,
+            "ended_utc": utc_now(), "status": status,
             "inputs": [{"path": str(path), "sha256": sha256(path)} for path in inputs if path.is_file()],
             "outputs": [{"path": str(path), "sha256": sha256(path)} for path in outputs if path.is_file()],
             "command": command, "firempc_python": str(self.python), "error": error,
@@ -599,7 +573,7 @@ class Processor:
             ),
         }
         manifest.update(extra or {})
-        _atomic_json(self._manifest_path(product, day, stage), manifest)
+        atomic_json(self._manifest_path(product, day, stage), manifest)
 
     def run_stage(
         self,
@@ -608,7 +582,7 @@ class Processor:
         stage: str,
         source_tiles: dict[tuple[str, date], tuple[TileEntry, ...]],
     ) -> None:
-        started = _utc_now()
+        started = utc_now()
         inputs: list[Path] = []
         outputs: list[Path] = []
         command = None
@@ -799,7 +773,7 @@ class Processor:
             "predecessor_date": predecessor.isoformat() if predecessor else None,
             "outputs": [{"path": str(path), "sha256": sha256(path)} for path in outputs],
         }
-        _atomic_json(destination / "state.json", state)
+        atomic_json(destination / "state.json", state)
         return inputs, outputs, command
 
     def _bridge_missing(
@@ -827,7 +801,7 @@ class Processor:
                 raise RuntimeError(
                     f"{product}: {missing} has complete source data but no "
                     "spatial-fill state; process that date instead of bridging it")
-            started = _utc_now()
+            started = utc_now()
             token = missing.strftime("%Y_%m_%d")
             carried: list[Path] = []
             for source in sorted(tiles):

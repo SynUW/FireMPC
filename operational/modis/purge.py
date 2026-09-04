@@ -42,24 +42,12 @@ OPERATIONAL = Path(__file__).resolve().parents[1]
 if str(OPERATIONAL) not in sys.path:
     sys.path.insert(0, str(OPERATIONAL))
 
-import paths
+import ops, paths
 from modis.preprocess import TileEntry, load_complete_tiles
 from modis.registry import download_products
 from modis.to_tiles import validate_raster
 
 app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
-
-
-def _lock(work_root: Path):
-    work_root.mkdir(parents=True, exist_ok=True)
-    path = work_root / "modis_purge_raw.lock"
-    handle = path.open("a+")
-    try:
-        fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except BlockingIOError as exc:
-        handle.close()
-        raise RuntimeError(f"another modis_purge_raw run holds {path}") from exc
-    return handle
 
 
 def _report_paths(source: Path) -> list[Path]:
@@ -195,7 +183,7 @@ def main(
 ) -> None:
     if retention_days < 0:
         raise typer.BadParameter("--retention-days must not be negative")
-    handle = _lock(Path(paths.WORK))
+    handle = ops.lock(Path(paths.WORK), "modis_purge_raw")
     try:
         complete_tiles = load_tiling_history(tiling_manifest)
         cutoff = datetime.now(timezone.utc).date() - timedelta(days=retention_days)
