@@ -1021,15 +1021,17 @@ def run(args: CliOptions) -> int:
     print("  " + "   ".join(f"{k}={v}" for k, v in sorted(counts.items())))
 
     # Convert to the driver tiles preprocessing actually reads, so one invocation
-    # ends in the same place the gee backend does. Only dates the manifest marks
-    # complete are tiled, and existing valid tiles are left alone, so this is
-    # incremental in exactly the way the download above is.
+    # ends in the same place the GEE backend does. Complete dates and settled
+    # (overdue) partial dates are tiled: GEE mosaicked the available granules and
+    # retained masked pixels, which matters for polar-winter training parity.
+    # Recent partials still wait for their measured completion window. Existing
+    # valid tiles are left alone, so this remains incremental.
     tile_rc = 0
     if args.no_tile:
         print("\n(--no-tile: granules only, no driver tiles built)")
     elif manifest["errors"]:
-        # load_manifest refuses a manifest with errors, and rightly: tiling a
-        # partial download would bake the gap into the drivers.
+        # A transfer error is not the same as a settled partial publication:
+        # baking a failed download into the drivers would lose real source data.
         print("\n(skipping tiling: the download manifest records errors)", file=sys.stderr)
     else:
         print()

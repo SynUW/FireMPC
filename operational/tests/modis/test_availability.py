@@ -33,21 +33,59 @@ def test_a_route_maps_to_its_earthdata_collections():
     assert av.route_collections("NDVIEVI") == av.route_collections("MCD09GA")
 
 
-def test_a_route_is_complete_only_when_its_slowest_collection_lands(tmp_path: Path):
+def test_a_route_is_usable_once_its_first_platform_lands(tmp_path: Path):
+    """The preprocessor builds a date when ANY platform group is complete.
+
+    This replaces an earlier contract that took the max across every
+    collection.  That rule ruled out single-platform days, which
+    `available_platform_groups` treats as first-class -- and 2026 contains a
+    55-day Aqua outage whose dates all have full Terra-built rasters.
+    """
     day = date(2026, 7, 10)
     _write_probe(tmp_path, "MOD09GA", [(day, _landed(day, 2))])
     _write_probe(tmp_path, "MYD09GA", [(day, _landed(day, 5))])
     times = av.load_insert_times(tmp_path)
-    assert av.completion_times("MCD09GA", times)[day] == _landed(day, 5)
-    assert day not in av.known_by("MCD09GA", date(2026, 7, 14), times)
-    assert day in av.known_by("MCD09GA", date(2026, 7, 15), times)
+    assert av.completion_times("MCD09GA", times)[day] == _landed(day, 2)
+    assert day not in av.known_by("MCD09GA", date(2026, 7, 11), times)
+    assert day in av.known_by("MCD09GA", date(2026, 7, 12), times)
 
 
-def test_a_date_missing_from_one_collection_is_unknown(tmp_path: Path):
-    day = date(2026, 7, 10)
+def test_a_single_platform_day_is_available_from_that_platform(tmp_path: Path):
+    """Terra alone is enough; the absent platform is not evidence of absence."""
+    day = date(2026, 4, 1)          # inside the 2026 Aqua outage
     _write_probe(tmp_path, "MOD09GA", [(day, _landed(day, 1))])
     times = av.load_insert_times(tmp_path)
+    assert av.completion_times("MCD09GA", times)[day] == _landed(day, 1)
+    assert day in av.known_by("MCD09GA", date(2026, 4, 2), times)
+
+
+def test_a_date_with_no_complete_group_is_still_unknown(tmp_path: Path):
+    """Nothing is available without evidence -- the conservative rule stands."""
+    day = date(2026, 7, 10)
+    times = av.load_insert_times(tmp_path)          # no probe records at all
     assert av.completion_times("MCD09GA", times) == {}
+    assert day not in av.known_by(
+        "MCD09GA", date(2026, 7, 12), times, candidates={day})
+
+
+def test_the_aqua_outage_does_not_strand_a_terra_window(tmp_path: Path):
+    """The failure this fix exists to prevent, at window scale."""
+    outage = [date(2026, 3, 17) + timedelta(days=n) for n in range(55)]
+    for day in outage:
+        _write_probe(tmp_path, "MOD09GA", [(day, _landed(day, 2))])
+    times = av.load_insert_times(tmp_path)
+    # The last outage date lands at D+2, so an as-of before that correctly
+    # still excludes it -- the guarantee is intact, not weakened.
+    assert av.known_by("MCD09GA", date(2026, 5, 12), times,
+                       candidates=set(outage)) == set(outage)
+    assert av.known_by("MCD09GA", date(2026, 5, 11), times,
+                       candidates=set(outage)) == set(outage) - {date(2026, 5, 10)}
+
+
+def test_ndvievi_inherits_the_proxy_platform_groups():
+    assert av.route_platform_collections("NDVIEVI") == av.route_platform_collections("MCD09GA")
+    assert av.route_platform_collections("MCD09GA") == (
+        frozenset({"MOD09GA"}), frozenset({"MYD09GA"}))
 
 
 def test_observations_beyond_the_grace_horizon_need_no_evidence(tmp_path: Path):

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 from datetime import date, datetime, timedelta, timezone
@@ -30,7 +31,7 @@ from canfirecast.provision import verify_release
 from modis.processing_registry import CHANNELS as MODIS_CHANNELS
 
 app = typer.Typer(add_completion=False, pretty_exceptions_enable=False)
-STAGES = ("preflight", "weather-download", "weather-align-encode", "physical-correction", "cffdrs-derive", "modis-latest", "assemble", "validate")
+STAGES = ("preflight", "weather-download", "weather-align-encode", "physical-correction", "cffdrs-derive", "modis-latest", "assemble", "validate", "publish")
 DEFAULT_STORAGE = "monthly"
 
 
@@ -53,6 +54,45 @@ def run(command: list[str], log: Path, *, cwd: Path = vendorpaths.OPERATIONAL_RO
     if result.returncode: raise RuntimeError(f"stage exited {result.returncode}; see {log}")
 
 
+def modis_pipeline_command(
+    target: date, *, backend: str, stream: str, modis_policy: str,
+    as_of: str | None, overwrite: list[str],
+) -> list[str]:
+    """The `modis pipeline` invocation for one target.
+
+    A backfill and an operational run differ here and nowhere else: `--as-of`
+    holds MODIS resolution to the observations that had actually landed by that
+    date, so a rebuilt window cannot be shown granules published after it.
+    Omitted, the run resolves against whatever is on disk, which is the right
+    answer only when the run really is happening on the target date.
+    """
+    command = [
+        sys.executable, str(vendorpaths.CLI), "modis", "pipeline",
+        "--target", target.isoformat(), "--backend", backend,
+        "--stream", stream, "--modis-policy", modis_policy,
+    ]
+    if as_of is not None:
+        command += ["--as-of", as_of]
+    return command + overwrite
+
+
+def remove_ingested_modis_handoff(h5_path: Path, target: date, store_root: Path) -> int:
+    """Remove a target package only after its whole window is in the month store."""
+    expected = registry.target_window_dates(target)
+    missing = [day.isoformat() for day in expected if not monthly_store.is_written(store_root, day)]
+    if missing:
+        raise RuntimeError(
+            "refusing to remove MODIS handoff; monthly store is missing: "
+            + ", ".join(missing)
+        )
+    package_dir = h5_path.parent
+    if h5_path.name != "modis_inputs.h5" or package_dir.name != target.isoformat():
+        raise RuntimeError(f"refusing to remove unexpected MODIS handoff path: {h5_path}")
+    reclaimed = sum(path.stat().st_size for path in package_dir.rglob("*") if path.is_file())
+    shutil.rmtree(package_dir)
+    return reclaimed
+
+
 @app.command()
 def main(
     target: Annotated[str, typer.Option("--target")] = "today",
@@ -67,10 +107,25 @@ def main(
     to_stage: Annotated[str | None, typer.Option("--to-stage")] = None,
     overwrite: Annotated[bool, typer.Option("--overwrite")] = False,
     resume: Annotated[bool, typer.Option("--resume/--no-resume")] = True,
+    cleanup_modis: Annotated[bool, typer.Option(
+        "--cleanup-modis/--keep-modis",
+        help="After monthly ingestion, remove the redundant per-target MODIS handoff.",
+    )] = True,
     state_root: Annotated[Path, typer.Option("--state-root")] = DEFAULT_LEDGER,
+    as_of: Annotated[str | None, typer.Option(
+        "--as-of",
+        help="Resolve MODIS only against observations that had landed by this "
+             "date (YYYY-MM-DD). A hindcast target D wants --as-of D; an "
+             "operational run wants the default, which is what is on disk.",
+    )] = None,
 ) -> None:
     target_day = resolve_target(target)
-    end_stage = to_stage or "validate"
+    if as_of is not None:
+        try:
+            date.fromisoformat(as_of)
+        except ValueError:
+            raise typer.BadParameter("--as-of must be YYYY-MM-DD") from None
+    end_stage = to_stage or STAGES[-1]
     if from_stage not in STAGES or end_stage not in STAGES: raise typer.BadParameter(f"stages must be one of {STAGES}")
     lo, hi = STAGES.index(from_stage), STAGES.index(end_stage)
     if hi < lo: raise typer.BadParameter("--to-stage precedes --from-stage")
@@ -83,6 +138,7 @@ def main(
     raw_window = work / "encoded_raw55.h5"; base = work / "base_corrected55.h5"; corrected = work / "corrected55.h5"
     package = package_dir / "canfirecast_inputs.h5"
     store_root = Path(paths.CANFIRECAST_PACKAGES)
+    daily_package = Path(paths.CANFIRECAST_DAILY_PACKAGE)
     month_files = sorted({
         monthly_store.month_path(store_root, day)
         for day in registry.target_window_dates(target_day)
@@ -96,6 +152,7 @@ def main(
         "target_date": target_day.isoformat(),
         "release": release,
         "modis_policy": modis_policy,
+        "modis_as_of": as_of,
         "channel_registry_version": registry.REGISTRY_VERSION,
         "stages": {},
         "status": "running",
@@ -176,7 +233,7 @@ def main(
             if resume and modis.is_file() and not overwrite:
                 record["stages"]["modis-latest"] = "reused"
             else:
-                run([sys.executable, str(vendorpaths.CLI), "modis", "pipeline", "--target", target_day.isoformat(), "--backend", modis_backend, "--stream", modis_stream, "--modis-policy", modis_policy] + common_overwrite, report_dir / "modis-latest.log")
+                run(modis_pipeline_command(target_day, backend=modis_backend, stream=modis_stream, modis_policy=modis_policy, as_of=as_of, overwrite=common_overwrite), report_dir / "modis-latest.log")
                 record["stages"]["modis-latest"] = "complete"
         statics = release_dir / manifest["artifacts"]["statics"]["path"]
         if "assemble" in selected:
@@ -192,18 +249,36 @@ def main(
             else:
                 run([sys.executable, str(vendorpaths.CLI), "canfirecast", "package", "--corrected-weather", str(corrected), "--static", str(statics), "--modis", str(modis), "--output", str(package), "--target-date", target_day.isoformat()] + common_overwrite, report_dir / "assemble.log")
                 record["stages"]["assemble"] = "complete"
+        # The store keeps every date; the model reads one ten-day window. Read
+        # that window once here and let `validate` and `publish` share it --
+        # reconstructing a national window twice costs minutes.
+        window = None
+        if storage == "monthly" and {"validate", "publish"} & set(selected):
+            window = monthly_store.read_window(
+                store_root, target_day, static_h5=statics, state_h5=state,
+                correction_artifact=correction_artifact,
+            )
         if "validate" in selected:
             if storage == "monthly":
-                data, validity, store_provenance = monthly_store.read_window(
-                    store_root, target_day, static_h5=statics, state_h5=state,
-                    correction_artifact=correction_artifact,
-                )
-                monthly_store.validate_window(
-                    data, validity, store_provenance, target_day)
+                monthly_store.validate_window(*window, target_day)
             else:
                 from canfirecast.package import validate_package
                 validate_package(package)
             record["stages"]["validate"] = "complete"
+        if "publish" in selected:
+            # One path, rewritten every day by atomic replace: the model is
+            # pointed at it once and never has to work out today's date.
+            from canfirecast.package import validate_package
+            if storage == "monthly":
+                monthly_store.write_window_package(daily_package, *window)
+            else:
+                daily_package.parent.mkdir(parents=True, exist_ok=True)
+                temporary = daily_package.with_suffix(daily_package.suffix + ".tmp")
+                shutil.copyfile(package, temporary)
+                os.replace(temporary, daily_package)
+            validate_package(daily_package)
+            record["stages"]["publish"] = "complete"
+            record["daily_package"] = str(daily_package)
         if corrected.is_file():
             with h5py.File(corrected, "r") as h5:
                 record["weather"] = {
@@ -226,10 +301,17 @@ def main(
                     for product in sorted({c.product for c in MODIS_CHANNELS})
                 }
                 record["modis_fill_policy_version"] = h5.attrs.get("fill_policy_version", "unknown")
+        if storage == "monthly" and "assemble" in selected and cleanup_modis:
+            reclaimed = remove_ingested_modis_handoff(modis, target_day, store_root)
+            record["modis_handoff_cleanup"] = {
+                "path": str(modis.parent), "reclaimed_bytes": reclaimed,
+            }
         artifacts = (
             {"monthly_stores": [str(path) for path in month_files]}
             if storage == "monthly" else {"package": str(package)}
         )
+        if "publish" in selected:
+            artifacts["daily_package"] = str(daily_package)
         record.update({"status": "complete", "artifacts": artifacts, "d11_state": str(state)})
     except Exception as exc:
         record.update({"status": "failed", "error": str(exc)}); raise
@@ -240,6 +322,8 @@ def main(
             typer.echo(path)
     else:
         typer.echo(package)
+    if "publish" in selected:
+        typer.echo(daily_package)
 
 
 if __name__ == "__main__": app()

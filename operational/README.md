@@ -20,8 +20,62 @@ $WILDFIRE_DATA_ROOT/packages/canfirecast/YYYY-MM.h5
 
 Each date is stored once. A model window is reconstructed as schema-version-1
 `uint8 (10,55,H,W)` data, with target-dependent CFFDRS channels derived at read
-time from the certified D-11 state. The legacy materialized package remains
-available with `canfirecast pipeline --storage daily` and is written to
+time from the certified D-11 state. After a successful monthly ingestion, the
+redundant `packages/modis/<target>/` handoff is removed automatically. Use
+`--keep-modis` on the CanFireCast pipeline only when retaining that intermediate
+package for debugging.
+
+The model does not read the store. The last pipeline stage, `publish`, reads
+target `D`'s ten-day window back out of it and writes that window as an
+ordinary package to one fixed path:
+
+```text
+$WILDFIRE_DATA_ROOT/packages/canfirecast/daily.h5
+```
+
+That file is the model's input. It is replaced -- atomically, by rename -- at
+the end of every run, so a consumer is pointed at it once and never has to
+work out today's date, and a reader always sees either yesterday's package or
+today's, never a partial one. History lives in the month files; only the
+current window is materialized. Republishing any past target is a read away:
+
+```bash
+python operational/cli.py canfirecast store publish \
+  --target 2026-08-20 --static /path/to/statics.h5 --output /tmp/window.h5
+```
+
+## Historical testing
+
+A past month needs no rebuild once its dates are in the store: a target costs
+one window read plus the CFFDRS recursion, seeded from that target's own D-11
+ledger state, and nothing is downloaded or reprocessed. Replay a range into
+per-target files, which keeps the sweep away from the daily package the model
+is running on:
+
+```bash
+python operational/cli.py canfirecast store replay \
+  --start 2026-07-02 --end 2026-08-01 \
+  --static  $WILDFIRE_DATA_ROOT/assets/canfirecast/operational-v1/statics.h5 \
+  --correction-artifact $WILDFIRE_DATA_ROOT/assets/canfirecast/operational-v1/cffdrs_aware_correction.json
+# -> packages/canfirecast/hindcast/<D>.h5
+```
+
+The sweep pre-checks every target -- its ten stored dates and its certified
+D-11 state -- and refuses up front rather than failing partway through; pass
+`--skip-incomplete` to replay only what the store covers. A target is
+replayable once the store holds `D-10..D-1`, so the earliest replayable target
+is nine days after a month file's first date. Reckon on a few minutes and
+roughly 300 MB per target; if the model runs inline, `store publish` one target
+at a time keeps a single file on disk instead.
+
+A hindcast is only as honest as what the store froze. MODIS is frozen at first
+write, so a replay can never be shown a granule that had not yet landed -- but
+the freeze also records the fill policy of the run that wrote it, and a range
+whose dates were ingested under different policies is not a single experiment.
+`modis_fill_policy_version` in the run manifests says which.
+
+The legacy per-target materialization remains available with
+`canfirecast pipeline --storage daily`, which additionally keeps
 `packages/canfirecast/<D>/canfirecast_inputs.h5`. Ten is the input-window
 length. The experiment name “15day” means fifteen separate forecast-horizon
 checkpoints, not fifteen input days. Before model execution,
@@ -98,7 +152,8 @@ python operational/daily.py --target today
 
 The pipeline validates reconstructed-window dimensions, channel order, dtype,
 dates, state lineage, geospatial metadata, validity data, and frozen dependency
-hashes.
+hashes, and revalidates the published daily package as a file after writing
+it.
 MODIS source dates and fill ages are retained in the H5 and manifests. A run
 uses release copies of both fitted correction JSON files and never refits them.
 

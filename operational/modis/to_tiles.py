@@ -810,7 +810,17 @@ def load_manifest(path):
     # GEE backend writes a tiling report instead, but older runs of it left
     # export-name-keyed manifests at this path, and those look valid while
     # matching zero products -- a silent no-op. Fail loudly on them.
-    if manifest.get("source") not in (None, "earthaccess"):
+    # Two backends describe tiles that ALREADY EXIST rather than granules to
+    # mosaic: `training-archive-adoption` (the training archive's tiles, which
+    # are byte-compatible with this contract) and `existing-tile-inventory`
+    # (a window's worth of tiles on disk, gathered into one report because
+    # preprocessing reads a single report and old per-run reports rotate away).
+    # Both are short-name-keyed like a download manifest, so the silent-no-op
+    # hazard above does not apply, and nothing is taken on trust: every tile
+    # still goes through `validate_tile` below and is recorded only once it
+    # passes.
+    if manifest.get("source") not in (
+            None, "earthaccess", "training-archive-adoption", "existing-tile-inventory"):
         raise RuntimeError(
             f"manifest {path} was written by the {manifest['source']!r} backend; "
             "only an earthaccess download manifest can be tiled")
@@ -828,6 +838,14 @@ def manifest_jobs(manifest):
         for day_text, entry in sorted(entries.items()):
             status = entry.get("status")
             ready = status == "complete"
+            # The historical GEE training-data path mosaicked whatever granules
+            # existed and retained masked/zero pixels where a spatial MODIS tile
+            # was not published.  Polar-winter optical dates are permanently
+            # partial, so dropping them would diverge from the model inputs.  Do
+            # still wait through the product's measured completion window: a
+            # recent partial may merely be a late granule, whereas an overdue
+            # partial is the settled image GEE would have served historically.
+            ready |= (status == "partial" and entry.get("overdue") is True)
             # Annual land cover is intentionally old and cannot be latency-gated
             # against a current-year publication. Its manifest marks that policy.
             ready |= (status == "present" and block.get("stale_by_design") is True)
@@ -887,7 +905,11 @@ def run_manifest(args):
     print(f"stream={manifest['stream']}  ready output-dates={len(jobs)}")
     report = {
         "run_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "source": "earthaccess",
+        # Carry the manifest's own backend forward rather than asserting
+        # earthaccess: an adopted-tile run reached these rasters a different
+        # way, and a reader of the report should be able to see that without
+        # having to open the manifest it names below.
+        "source": manifest.get("source") or "earthaccess",
         "source_manifest": os.path.abspath(args.manifest),
         "source_run_utc": manifest["run_utc"],
         "stream": manifest["stream"],

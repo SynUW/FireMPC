@@ -30,6 +30,12 @@ Under an as-of query that means it is excluded: a backfill should not assume
 availability it cannot evidence.  Callers that pass no as-of date keep the
 current behaviour exactly.
 
+Completion is per platform group, matching what the preprocessor will build:
+a date is usable once Terra's collections have all landed, or Aqua's have,
+whichever comes first.  Requiring both would rule out every single-platform
+day -- and 2026 contains a 55-day Aqua outage whose dates all have full
+national rasters built from Terra alone.
+
 The grace window
 ----------------
 Strictness alone is unusable at the edges.  The probe history only reaches
@@ -74,6 +80,35 @@ def _parse_instant(value: str) -> datetime:
     text = value.strip().replace("Z", "+00:00")
     parsed = datetime.fromisoformat(text)
     return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+
+@lru_cache(maxsize=None)
+def route_platform_collections(product: str) -> tuple[frozenset[str], ...]:
+    """The route's collections, grouped by observing platform.
+
+    `modis.preprocess.available_platform_groups` treats a date as processable
+    when ANY platform group is complete -- a Terra-only day is a first-class
+    case, not a degraded one, and the combiners take whichever side is valid
+    per pixel.  Availability has to agree with that, or an as-of query rules
+    out dates the preprocessor built full national rasters for.
+
+    Routes with no declared groups (already-combined or single-platform) keep
+    the all-collections semantics, as one group.
+    """
+    if product == "NDVIEVI":
+        return route_platform_collections(NDVIEVI_PROXY)
+    route = ROUTES.get(product)
+    if route is None:
+        raise KeyError(f"unknown route {product!r}")
+    from modis.registry import PRODUCTS
+    groups = []
+    for group in route.platform_groups:
+        collections = frozenset(
+            PRODUCTS[export]["earthaccess"]["short_name"]
+            for export in group if export in PRODUCTS)
+        if collections:
+            groups.append(collections)
+    return tuple(groups) if groups else (route_collections(product),)
 
 
 @lru_cache(maxsize=None)
@@ -135,22 +170,40 @@ def completion_times(
 ) -> dict[date, datetime]:
     """When each acquisition date of a route became complete.
 
-    A route fed by several collections is complete only once the slowest of
-    them has landed, so the per-date answer is the max across collections.  A
-    date missing from any contributing collection is omitted -- unknown, not
-    available.
+    A date becomes usable when the first *platform group* is complete, which
+    is the rule `modis.preprocess` builds by.  Within a group every collection
+    must have landed (max over the group); across groups the earliest such
+    completion wins (min over groups).  A date with no complete group at all
+    is omitted -- unknown, not available.
+
+    The conservative intent is unchanged: nothing is available without
+    evidence, and a group counts only once every one of its collections has an
+    insert record.  What changes is that a Terra-only day is no longer held
+    hostage to an Aqua granule that does not exist -- the 2026-03-17..05-10
+    Aqua outage would otherwise make 55 dates unresolvable under `--as-of`,
+    while `scaled/` holds a full national raster for every one of them.
+
+    One limitation this cannot fix: as-of gates which *date* is selected, not
+    which platforms went into the raster already on disk.  A date built today
+    from both platforms is attributed to its first group's completion.  For a
+    genuine outage the two coincide, since the missing platform never lands.
     """
     times = insert_times if insert_times is not None else load_insert_times()
-    collections = route_collections(product)
+    groups = route_platform_collections(product)
+    wanted = set().union(*groups)
     per_date: dict[date, dict[str, datetime]] = defaultdict(dict)
     for (collection, acquired), inserted in times.items():
-        if collection in collections:
+        if collection in wanted:
             per_date[acquired][collection] = inserted
-    return {
-        acquired: max(seen.values())
-        for acquired, seen in per_date.items()
-        if set(seen) == set(collections)
-    }
+    completed: dict[date, datetime] = {}
+    for acquired, seen in per_date.items():
+        landed = [
+            max(seen[collection] for collection in group)
+            for group in groups if group <= set(seen)
+        ]
+        if landed:
+            completed[acquired] = min(landed)
+    return completed
 
 
 DEFAULT_GRACE_DAYS = 90

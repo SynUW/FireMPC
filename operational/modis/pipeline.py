@@ -51,6 +51,25 @@ def _atomic_json(path: Path, value: dict) -> None:
         Path(temporary).unlink(missing_ok=True)
 
 
+def package_command(target: str, fill_policy: Path, *, as_of: str | None, overwrite: bool) -> list[str]:
+    """The `modis package` invocation for one target.
+
+    `as_of` is what separates a backfill from an operational run: without it
+    `resolve_source` takes the newest observation on disk, which for a rebuilt
+    date silently includes granules published weeks after it.  Kept as a
+    function so the flag's presence is testable without running a stage.
+    """
+    command = [
+        sys.executable, str(vendorpaths.CLI), "modis", "package",
+        "--target", target, "--fill-policy", str(fill_policy),
+    ]
+    if as_of is not None:
+        command += ["--as-of", as_of]
+    if overwrite:
+        command.append("--overwrite")
+    return command
+
+
 def run_command(command: list[str], log: Path, *, tolerate: tuple[int, ...] = ()) -> int:
     log.parent.mkdir(parents=True, exist_ok=True)
     with log.open("w", encoding="utf-8") as handle:
@@ -75,6 +94,12 @@ def main(
     modis_policy: Annotated[Literal["strict", "latest-available"], typer.Option("--modis-policy")] = "strict",
     lookback_days: Annotated[int, typer.Option("--lookback-days", min=10)] = 45,
     fill_policy: Annotated[Path | None, typer.Option("--fill-policy")] = None,
+    as_of: Annotated[str | None, typer.Option(
+        "--as-of",
+        help="Resolve MODIS only against observations that had landed by this "
+             "date (YYYY-MM-DD). Use it for backfills; an operational run wants "
+             "the default, which is whatever is on disk.",
+    )] = None,
 ) -> None:
     require_operational_lineage()
     if from_stage not in STAGES or to_stage not in STAGES:
@@ -83,6 +108,11 @@ def main(
     if hi < lo:
         raise typer.BadParameter("--to-stage precedes --from-stage")
     target_day = date.fromisoformat(target)
+    if as_of is not None:
+        try:
+            date.fromisoformat(as_of)
+        except ValueError:
+            raise typer.BadParameter("--as-of must be YYYY-MM-DD") from None
     if fill_policy is None:
         fill_policy = vendorpaths.CONFIG / (
             "modis_latest_available_policy.json"
@@ -97,6 +127,7 @@ def main(
         "window": {"start": start.isoformat(), "end": end.isoformat()},
         "backend": backend, "stream": stream, "modis_policy": modis_policy,
         "lookback_days": (lookback_days if modis_policy == "latest-available" else 10),
+        "as_of": as_of,
         "stages": {},
     }
     try:
@@ -133,12 +164,7 @@ def main(
             run_command(command, report_dir / "preprocess.log")
             record["stages"]["preprocess"] = "complete"
         if "package" in STAGES[lo:hi + 1]:
-            command = [
-                sys.executable, str(vendorpaths.CLI), "modis", "package",
-                "--target", target, "--fill-policy", str(fill_policy),
-            ]
-            if overwrite:
-                command.append("--overwrite")
+            command = package_command(target, fill_policy, as_of=as_of, overwrite=overwrite)
             run_command(command, report_dir / "package.log")
             record["stages"]["package"] = "complete"
         record["status"] = "complete"

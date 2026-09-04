@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import h5py
@@ -10,6 +10,7 @@ import numpy as np
 import pytest
 
 from canfirecast import input_registry as registry
+from canfirecast import package as canfirecast_package
 from canfirecast import store
 
 GRID = (8, 12)
@@ -107,3 +108,72 @@ def test_month_files_are_labelled_by_month_alone(tmp_path: Path):
     root = tmp_path / "store"
     _write_run(root, date(2026, 7, 20), seed=1)
     assert [p.name for p in sorted(root.glob("*.h5"))] == ["2026-07.h5"]
+
+
+def _window(target: date):
+    """A synthetic read_window result: the tensor, its validity, its provenance."""
+    rng = np.random.default_rng(11)
+    data = rng.integers(0, 255, (store.WINDOW_DAYS, len(registry.CHANNEL_NAMES), *GRID), dtype=np.uint8)
+    data[:, registry.FIRE_DETECTION_CHANNEL] = 0
+    data[:, list(registry.ERA5_ONLY_MISSING_CHANNELS)] = 0
+    dates = [day.isoformat() for day in registry.target_window_dates(target)]
+    provenance = {
+        "target_date": target.isoformat(), "dates": dates,
+        "modis_source_dates": np.asarray(
+            [[day] * len(store.MODIS_CHANNELS) for day in dates], dtype=object),
+        "modis_fill_age_days": np.zeros((store.WINDOW_DAYS, len(store.MODIS_CHANNELS)), dtype="i2"),
+        "d11_state_date": registry.state_date(target).isoformat(),
+        "d11_state_sha256": "0" * 64,
+        "crs": CRS, "transform": TRANSFORM, "height": GRID[0], "width": GRID[1],
+    }
+    return data, np.ones((store.WINDOW_DAYS, *GRID), dtype=bool), provenance
+
+
+def test_the_published_daily_package_satisfies_the_package_contract(tmp_path: Path):
+    target = date(2026, 7, 20)
+    output = store.write_window_package(tmp_path / "canfirecast_inputs.h5", *_window(target))
+    canfirecast_package.validate_package(output)
+    with h5py.File(output) as h5:
+        assert h5.attrs["target_date"] == target.isoformat()
+        # A bare authority code would leave visualization_gen unprojected.
+        assert "GEOGCS" in h5.attrs["crs"]
+
+
+def test_publishing_the_next_day_replaces_the_same_file(tmp_path: Path):
+    """The model is pointed at one path; yesterday's window must not linger."""
+    output = tmp_path / "canfirecast_inputs.h5"
+    store.write_window_package(output, *_window(date(2026, 7, 20)))
+    store.write_window_package(output, *_window(date(2026, 7, 21)))
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["canfirecast_inputs.h5"]
+    with h5py.File(output) as h5:
+        assert h5.attrs["target_date"] == "2026-07-21"
+        assert [v.decode() for v in h5["dates"][()]][-1] == "2026-07-20"
+
+
+def _ledger(root: Path, target: date) -> Path:
+    """A ledger holding just the D-11 state `target` needs."""
+    root.mkdir(parents=True, exist_ok=True)
+    (root / f"{registry.state_date(target).isoformat()}.h5").touch()
+    return root
+
+
+def test_a_replayable_target_needs_its_ten_dates_and_its_state(tmp_path: Path):
+    root = tmp_path / "store"
+    target = date(2026, 7, 20)
+    _write_run(root, target, seed=1)
+    ledger = _ledger(tmp_path / "ledger", target)
+    assert store.missing_inputs(root, target, state_root=ledger) == []
+    # D+1 reaches one date past what the run stored.
+    assert store.missing_inputs(root, target + timedelta(days=1), state_root=ledger) == [
+        "2026-07-20", f"D-11 state {registry.state_date(target + timedelta(days=1))}"]
+
+
+def test_a_sweep_reports_every_date_a_target_lacks(tmp_path: Path):
+    """A month replay must fail up front, not nineteen windows in."""
+    root = tmp_path / "store"
+    target = date(2026, 7, 20)
+    _write_run(root, target, seed=1)
+    ledger = _ledger(tmp_path / "ledger", target)
+    with h5py.File(store.month_path(root, target), "r+") as h5:
+        h5["complete"][store.day_index(date(2026, 7, 14))] = False
+    assert store.missing_inputs(root, target, state_root=ledger) == ["2026-07-14"]
