@@ -49,3 +49,6 @@
 
 
 
+
+# machine-local operational environment
+operational/config/operational.env

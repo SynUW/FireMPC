@@ -226,7 +226,12 @@ def advance(
     validate_state(state_path(root, current), expected_date=current, template_path=template)
     while current < end:
         block_end = min(current + timedelta(days=10), end)
-        command([sys.executable, str(vendorpaths.CLI), "weather", "download", "--source", "era5", "--start", (current + timedelta(days=1)).isoformat(), "--end", block_end.isoformat()])
+        # --from-hourly: Earth Engine has been seen to skip a day of DAILY_AGGR
+        # while the hourly collection behind it is complete, and the recursion
+        # below cannot step over a date.  The rebuild verifies itself against a
+        # served neighbouring day before writing, so an unexplained change in
+        # the aggregation fails the advance rather than entering the ledger.
+        command([sys.executable, str(vendorpaths.CLI), "weather", "download", "--source", "era5", "--from-hourly", "--start", (current + timedelta(days=1)).isoformat(), "--end", block_end.isoformat()])
         window = Path(paths.PROCESSED_MODEL_WEATHER) / "ledger_windows" / f"through-{block_end.isoformat()}.h5"
         # Target block_end+1 yields the ten days ending at block_end. The last
         # short block overlaps certified prefix dates; advance_window skips it.

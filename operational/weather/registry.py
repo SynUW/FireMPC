@@ -197,6 +197,67 @@ ERA5_BANDS: tuple[WeatherBand, ...] = tuple(
     for index, name in enumerate(ERA5_SLOT_BANDS, start=1)
 )
 
+# ---------------------------------------------------------------------------
+# Rebuilding a missing ERA5-Land daily aggregate
+# ---------------------------------------------------------------------------
+# DAILY_AGGR is a derived product, and Earth Engine has been observed to skip a
+# day of it while the hourly collection behind it is complete (2026-08-26, seen
+# 2026-09-07: DAILY_AGGR 0 images, HOURLY 24).  A skipped day is not a cosmetic
+# gap -- the FFMC/DMC/DC recursion cannot step over a date, so one absent
+# aggregate stalls the certified ledger and every target that depends on it.
+#
+# The aggregation is recoverable because the band *name* carries the rule, and
+# each rule was verified against a served day rather than assumed:
+#
+#   ``_max``   the hourly maximum.
+#   ``_sum``   the sum of the day's hourly *increments*, which is not any single
+#              hourly image.  ERA5-Land accumulates over forecast steps 1..24 --
+#              valid 01:00 of the day through 00:00 of the next -- so the series
+#              inside one calendar day RESETS at 01:00.  Increments for 01:00
+#              through 23:00 telescope to the 23:00 image, and the 00:00 image
+#              belongs to the previous day's run, contributing only its own last
+#              hour.  Hence:
+#
+#                  sum(D) = v(D, 23:00) + v(D, 00:00) - v(D-1, 23:00)
+#
+#   otherwise  the hourly mean.
+#
+# Verified live 2026-09-07 against ECMWF/ERA5_LAND/DAILY_AGGR over Canada for
+# 2026-08-25, 08-27 and 07-15: means and maxima reproduce to <1e-5, and the four
+# accumulations to ~1e-16 -- exact in double precision.
+# surface_latent_heat_flux_sum reaches 7.6e-5 on some days, which is float32
+# cancellation between two large accumulations, not a rule mismatch.
+#
+# The near-misses are recorded because they are the trap.  Taking the 23:00
+# image alone, or the next day's 00:00 image, agrees at a *point* to 4.5e-8 and
+# still errs by ~15% elsewhere in the domain, which is why the gate reduces over
+# all of Canada and not over a sample pixel.
+#
+# A reconstructed day is genuine ERA5-Land: same reanalysis, same aggregation, a
+# different distribution product.  That is what keeps it admissible to the
+# certified ledger, and why `weather download --from-hourly` re-verifies the
+# rules against a neighbouring served day before it writes anything.
+ERA5_HOURLY_COLLECTION = "ECMWF/ERA5_LAND/HOURLY"
+ERA5_RECONSTRUCTION_VERSION = "era5-daily-from-hourly-v1"
+ERA5_HOURLY_STEPS = 24
+
+
+def era5_hourly_rule(slot: str) -> tuple[str, str]:
+    """The hourly band and reduction that reproduce one DAILY_AGGR band."""
+    if slot.endswith("_max"):
+        return slot[: -len("_max")], "max"
+    if slot.endswith("_sum"):
+        return slot[: -len("_sum")], "accumulated"
+    return slot, "mean"
+
+
+# (daily band, hourly band, reduction) for all 18, resolved once so the mapping
+# is inspectable rather than recomputed inside an Earth Engine loop.
+ERA5_HOURLY_RULES: tuple[tuple[str, str, str], ...] = tuple(
+    (slot, *era5_hourly_rule(slot)) for slot in ERA5_SLOT_BANDS
+)
+
+
 SOURCES: dict[str, WeatherSource] = {
     "ifs": WeatherSource(
         key="ifs",
